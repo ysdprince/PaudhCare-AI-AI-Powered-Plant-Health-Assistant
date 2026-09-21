@@ -1,0 +1,1344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PaudhCare AI – Smarter Plant Care. Powered by AI</title>
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg" />
+  <link rel="alternate icon" href="assets/images/favicon.svg" />
+  
+  <!-- Meta & SEO -->
+  <meta name="description" content="PaudhCare AI helps identify possible plant diseases from leaf images and provides responsible crop-care guidance aligned with SDG 2: Zero Hunger." />
+  <meta name="theme-color" content="#14452f" />
+
+  <!-- Google Fonts: Inter and Comprehensive Indic & Urdu Scripts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+Arabic:wght@400;600;700&family=Noto+Sans+Bengali:wght@400;600;700&family=Noto+Sans+Devanagari:wght@400;600;700&family=Noto+Sans+Gujarati:wght@400;600;700&family=Noto+Sans+Gurmukhi:wght@400;600;700&family=Noto+Sans+Kannada:wght@400;600;700&family=Noto+Sans+Malayalam:wght@400;600;700&family=Noto+Sans+Oriya:wght@400;600;700&family=Noto+Sans+Tamil:wght@400;600;700&family=Noto+Sans+Telugu:wght@400;600;700&family=Noto+Nastaliq+Urdu:wght@400;700&display=swap" rel="stylesheet" />
+
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+  <!-- ========================================================================
+       STICKY NAVIGATION
+       ======================================================================== -->
+  <header class="navbar" id="navbar">
+    <div class="container nav-container">
+      <a href="#home" class="brand-logo" aria-label="PaudhCare AI Home">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"></path>
+          <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"></path>
+        </svg>
+        <span>PaudhCare AI</span>
+        <span class="brand-sub">SDG 2</span>
+      </a>
+
+      <!-- Navigation Links -->
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#home" class="nav-link active" data-i18n="nav.home">Home</a></li>
+        <li><a href="#analyzer" class="nav-link" data-i18n="nav.analyzer">Analyzer</a></li>
+        <li><a href="#how-it-works" class="nav-link" data-i18n="nav.howItWorks">How It Works</a></li>
+        <li><a href="#ai-technology" class="nav-link" data-i18n="nav.aiPipeline">AI Pipeline</a></li>
+        <li><a href="#sustainability" class="nav-link" data-i18n="nav.sustainability">Sustainability</a></li>
+        <li><a href="#responsible-ai" class="nav-link" data-i18n="nav.safetyAccuracy">Safety & Accuracy</a></li>
+        <li><a href="#about" class="nav-link" data-i18n="nav.about">About</a></li>
+        <li class="nav-lang-item-mobile">
+          <button type="button" class="mobile-lang-drawer-btn" id="mobileLangDrawerBtn" aria-label="Open language selector">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="2" y1="12" x2="22" y2="12"></line>
+              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+            </svg>
+            <span class="mobile-lang-text">Language: <strong id="mobileCurrentLangLabel">English</strong></span>
+            <svg class="chevron-right" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+          </button>
+        </li>
+        <li class="nav-cta-item-mobile">
+          <a href="#analyzer" class="btn btn-primary btn-sm nav-drawer-btn" data-i18n="nav.analyzeBtn">Analyze Leaf</a>
+        </li>
+      </ul>
+
+      <!-- Action Buttons -->
+      <div class="nav-actions">
+        <!-- SaaS-Grade Multilingual Selector (Desktop Popover & Mobile Bottom Sheet Trigger) -->
+        <div class="lang-dropdown-container" id="langDropdownContainer">
+          <button type="button" class="lang-pill-btn" id="langSelectorDesktopBtn" aria-haspopup="listbox" aria-expanded="false" aria-label="Select Language">
+            <svg class="lang-globe-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="2" y1="12" x2="22" y2="12"></line>
+              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+            </svg>
+            <span id="desktopCurrentLangLabel">English</span>
+            <svg class="lang-chevron-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </button>
+          
+          <!-- Dropdown Popover (Desktop) -->
+          <div class="lang-popover" id="langPopover" role="dialog" aria-modal="false" aria-label="Select Language">
+            <div class="lang-popover-search">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+              <input type="text" id="langSearchDesktopInput" class="lang-search-box-input" placeholder="Search 23 Indian languages..." autocomplete="off" aria-label="Search languages" />
+            </div>
+            <div class="lang-popover-list" id="langOptionsListDesktop" role="listbox" aria-label="Supported Languages" tabindex="-1">
+              <!-- Populated dynamically with 23 languages -->
+            </div>
+          </div>
+        </div>
+        <a href="#analyzer" class="btn btn-primary btn-sm" data-i18n="nav.analyzeBtn">Analyze Leaf</a>
+        <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle navigation menu" aria-expanded="false">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- ======================================================================
+         HERO SECTION
+         ====================================================================== -->
+    <section class="section hero-section" id="home">
+      <div class="container hero-grid">
+        <!-- Hero Text -->
+        <div class="hero-content">
+          <div class="pill-badge pill-badge-green">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+            <span data-i18n="hero.badge">SDG 2 • Zero Hunger Prototype</span>
+          </div>
+
+          <h1 class="hero-headline" data-i18n="hero.headline">
+            Smarter Crop Care.<br />
+            <span class="highlight">Powered by AI.</span>
+          </h1>
+
+          <p class="hero-description" data-i18n="hero.description">
+            PaudhCare AI helps identify possible plant diseases from leaf images and provides responsible crop-care guidance for more sustainable agriculture.
+          </p>
+
+          <div class="hero-ctas">
+            <a href="#analyzer" class="btn btn-primary btn-lg">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+              </svg>
+              <span data-i18n="hero.ctaPrimary">Analyze a Leaf</span>
+            </a>
+            <a href="#how-it-works" class="btn btn-secondary btn-lg">
+              <span data-i18n="hero.ctaSecondary">Explore How It Works</span>
+            </a>
+          </div>
+
+          <div class="hero-trust-badges">
+            <div class="trust-badge-item">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+              </svg>
+              <span data-i18n="hero.trust1">Safety & Accuracy Framework</span>
+            </div>
+            <div class="trust-badge-item">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+              </svg>
+              <span data-i18n="hero.trust2">Field Decision Support</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Hero Visual Composition with Floating UI Elements -->
+        <div class="hero-visual-wrapper">
+          <div class="hero-image-frame">
+            <img src="assets/images/hero-leaf-graphic.svg" alt="AI Leaf Examination Visual with computer vision tracking overlay" />
+          </div>
+
+          <!-- Floating Badge 1 -->
+          <div class="floating-ui-badge badge-pos-1">
+            <div class="floating-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                <circle cx="12" cy="12" r="3"></circle>
+                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+              </svg>
+            </div>
+            <div>
+              <div class="floating-text-top" data-i18n="hero.badge1Sub">Vision Engine</div>
+              <div class="floating-text-bottom" data-i18n="hero.badge1">AI Analysis</div>
+            </div>
+          </div>
+
+          <!-- Floating Badge 2 -->
+          <div class="floating-ui-badge badge-pos-2">
+            <div class="floating-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                <path d="M12 2v20"></path>
+                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+              </svg>
+            </div>
+            <div>
+              <div class="floating-text-top" data-i18n="hero.badge2Sub">Field Health</div>
+              <div class="floating-text-bottom" data-i18n="hero.badge2">Plant Health</div>
+            </div>
+          </div>
+
+          <!-- Floating Badge 3 -->
+          <div class="floating-ui-badge badge-pos-3">
+            <div class="floating-icon" style="background:#fef3c7; color:#b45309;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+              </svg>
+            </div>
+            <div>
+              <div class="floating-text-top" data-i18n="hero.badge3Sub">Zero Hunger</div>
+              <div class="floating-text-bottom" data-i18n="hero.badge3">SDG 2</div>
+            </div>
+          </div>
+
+          <!-- Floating Badge 4 -->
+          <div class="floating-ui-badge badge-pos-4">
+            <div class="floating-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path>
+                <line x1="12" y1="9" x2="12" y2="13"></line>
+                <line x1="12" y1="17" x2="12.01" y2="17"></line>
+              </svg>
+            </div>
+            <div>
+              <div class="floating-text-top" data-i18n="hero.badge4Sub">Agronomic Guard</div>
+              <div class="floating-text-bottom" data-i18n="hero.badge4">Early Detection</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         ANALYZER SECTION (CORE FEATURE)
+         ====================================================================== -->
+    <section class="section" id="analyzer">
+      <div class="container">
+        <div class="section-header">
+          <div class="pill-badge pill-badge-green" data-i18n="analyzer.badge">Interactive Plant Analyzer</div>
+          <h2 class="section-title" data-i18n="analyzer.title">Analyze Your Plant</h2>
+          <p class="section-subtitle" data-i18n="analyzer.subtitle">
+            Upload a clear leaf image and let the AI analyze visible patterns.
+          </p>
+        </div>
+
+        <div class="analyzer-container">
+          <!-- Top Status and Optional Settings Bar -->
+          <div class="analyzer-controls-bar">
+            <div class="demo-status-pill" id="demoModePill">
+              <span class="status-dot status-dot-pulse"></span>
+              <span data-i18n="analyzer.demoBadge">Demo Mode Active</span>
+            </div>
+            <button class="api-toggle-btn" id="openApiSettingsBtn" title="Optional AI API Configuration">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                <circle cx="12" cy="12" r="3"></circle>
+                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+              </svg>
+              <span data-i18n="analyzer.settingsBtn">AI Model Settings</span>
+            </button>
+          </div>
+
+          <!-- Sample Pre-loaded Cases for Evaluator Demonstration -->
+          <div class="sample-presets-bar">
+            <div class="sample-presets-label">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                <polyline points="14 2 14 8 20 8"></polyline>
+                <line x1="16" y1="13" x2="8" y2="13"></line>
+                <line x1="16" y1="17" x2="8" y2="17"></line>
+                <polyline points="10 9 9 9 8 9"></polyline>
+              </svg>
+              <span data-i18n="analyzer.sampleLabel">Or try a demo sample case:</span>
+            </div>
+            <div class="sample-preset-grid" id="samplePresetsGrid">
+              <!-- Dynamically populated from data.js & i18n -->
+            </div>
+          </div>
+
+          <!-- Error Alert Banner -->
+          <div class="analyzer-alert" id="analyzerErrorAlert" role="alert">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="8" x2="12" y2="12"></line>
+              <line x1="12" y1="16" x2="12.01" y2="16"></line>
+            </svg>
+            <span id="analyzerErrorText" data-i18n="analyzer.errorDefault">Please upload a clear plant leaf image to continue.</span>
+          </div>
+
+          <!-- UPLOAD LEAF IMAGE: Large Drag-and-Drop Card (Default Visible) -->
+          <div class="dropzone-card" id="dropzoneCard" tabindex="0" role="button" aria-label="Upload leaf image">
+            <input type="file" id="leafFileInput" accept="image/jpeg, image/png, image/webp" style="display:none;" />
+            <div class="upload-icon-circle">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="17 8 12 3 7 8"></polyline>
+                <line x1="12" y1="3" x2="12" y2="15"></line>
+              </svg>
+            </div>
+            <h3 class="dropzone-title" data-i18n="analyzer.dropTitle">Drop your leaf image here</h3>
+            <p class="dropzone-hint" data-i18n="analyzer.dropSubtitle">or choose an image from your computer or phone</p>
+            <div class="dropzone-actions-dual" onclick="event.stopPropagation();">
+              <button type="button" class="btn btn-secondary btn-md" id="btnUploadPhoto">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="17 8 12 3 7 8"></polyline>
+                  <line x1="12" y1="3" x2="12" y2="15"></line>
+                </svg>
+                <span data-i18n="analyzer.uploadPhotoBtn">📁 Upload Photo</span>
+              </button>
+              <button type="button" class="btn btn-primary btn-md" id="btnTakePhoto">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                  <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                  <circle cx="12" cy="13" r="4"></circle>
+                </svg>
+                <span data-i18n="analyzer.takePhotoBtn">📷 Take Photo</span>
+              </button>
+            </div>
+            <div class="file-format-tags" data-i18n="analyzer.formats">Supported: JPG, PNG, WEBP (Max 15MB)</div>
+          </div>
+
+          <!-- IMAGE PREVIEW: Card when Image is Selected -->
+          <div class="preview-container" id="previewContainer">
+            <div class="scan-line" id="scanLine"></div>
+            <div class="preview-overlay-header">
+              <span class="preview-badge" id="previewBadge" data-i18n="analyzer.specimenReady">Specimen Ready</span>
+              <button class="btn-icon-overlay" id="removeImageBtn" title="Remove image and choose another">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              </button>
+            </div>
+            <img src="" alt="Selected leaf specimen for analysis" class="preview-image" id="previewImage" />
+          </div>
+
+          <!-- ANALYZE PLANT BUTTON -->
+          <div class="analyzer-actions-bar" id="analyzerActionsBar">
+            <button type="button" class="btn btn-primary btn-lg" id="analyzePlantBtn">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+              <span data-i18n="analyzer.analyzeBtn">Analyze Plant</span>
+            </button>
+          </div>
+
+          <!-- LOADING / ANALYSIS STATE -->
+          <div class="loading-diagnostic-box" id="loadingDiagnosticBox">
+            <div class="loading-spinner-ring"></div>
+            <div class="loading-steps-ticker" id="loadingTicker" data-i18n="analyzer.loadingTitle">Analyzing leaf...</div>
+            <div class="loading-subtext" data-i18n="analyzer.loadingSub">Examining foliar characteristics and preparing guidance...</div>
+          </div>
+
+          <!-- ================================================================
+               AI RESULT UI DASHBOARD (Section 7 Architecture)
+               ================================================================ -->
+          <div class="result-dashboard" id="resultDashboard">
+            <!-- Printable Report Header -->
+            <div class="print-only-report-header">
+              <div class="print-report-brand">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"></path>
+                  <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"></path>
+                </svg>
+                <h2>PaudhCare AI Plant Health Report</h2>
+              </div>
+              <p class="print-report-sub">Smarter Plant Care &bull; Powered by AI &bull; SDG 2: Zero Hunger</p>
+            </div>
+
+            <!-- Result Header Card -->
+            <div class="result-header-card">
+              <div class="result-meta-top">
+                <span class="pill-badge pill-badge-dark" id="resultTypeTag" data-i18n="result.headerTag">AI Plant Health Assessment</span>
+                <span class="demo-disclaimer-tag" id="resultStatusBanner" data-i18n="result.statusBanner">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="16" x2="12" y2="12"></line>
+                    <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                  </svg>
+                  Safety & Accuracy First — Verified Agronomic Decision Support.
+                </span>
+              </div>
+
+              <div class="result-title-group">
+                <div class="result-plant-sub" id="resultPlantName">Plant: Identifying...</div>
+                <h3 class="result-condition-title" id="resultCondition">AI Plant Health Assessment</h3>
+                <div class="result-badges-row">
+                  <span class="pill-badge pill-badge-amber" id="resultSeverityBadge">High Priority Attention</span>
+                  <div class="result-confidence-box">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                    </svg>
+                    <span id="resultConfidence" data-i18n="result.confidenceLabel">Confidence: Not available</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- INVALID / LOW-QUALITY SPECIMEN NOTICE CARD -->
+            <div class="invalid-image-notice-card" id="invalidImageNoticeCard" style="display: none;">
+              <div class="invalid-notice-header">
+                <div class="invalid-notice-icon">⚠️</div>
+                <div>
+                  <h4 class="invalid-notice-title" id="invalidNoticeTitle">Image Not Suitable for Plant Health Analysis</h4>
+                  <p class="invalid-notice-subtitle" id="invalidNoticeSubtitle">Our two-stage agricultural vision system could not detect a valid crop or plant specimen.</p>
+                </div>
+              </div>
+              <div class="invalid-reason-box">
+                <div class="invalid-reason-label">Reason Identified:</div>
+                <div class="invalid-reason-text" id="invalidReasonText">The uploaded photo does not appear to contain a plant, leaf, or crop.</div>
+              </div>
+              <div class="invalid-guidance-box">
+                <div class="invalid-guidance-title">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="16" x2="12" y2="12"></line>
+                    <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                  </svg>
+                  <span>How to Take a Photo That Can Be Analyzed:</span>
+                </div>
+                <ul class="invalid-guidance-list" id="invalidGuidanceList">
+                  <li>Hold the camera 15–30 cm (6–12 inches) away from the affected leaf or plant stem.</li>
+                  <li>Ensure the leaf is in sharp focus with good, even daylight (avoid blurry shots or strong shadows).</li>
+                  <li>Place the affected foliar area or lesion clearly in the center of the frame.</li>
+                  <li>Avoid uploading photos of animals, people, buildings, vehicles, or unrelated objects.</li>
+                </ul>
+              </div>
+              <div class="invalid-actions-row">
+                <button type="button" class="btn btn-primary" id="btnInvalidUpload">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="17 8 12 3 7 8"></polyline>
+                    <line x1="12" y1="3" x2="12" y2="15"></line>
+                  </svg>
+                  <span>Upload Another Photo</span>
+                </button>
+                <button type="button" class="btn btn-secondary" id="btnInvalidRetake">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                    <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                    <circle cx="12" cy="13" r="4"></circle>
+                  </svg>
+                  <span>Retake with Camera</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- VALID DIAGNOSIS CONTENT CONTAINER (Shown only if Stage 1 validation passes) -->
+            <div id="validDiagnosisContent">
+              <!-- WHAT WAS DETECTED (Primary Visual Findings) -->
+            <div class="detected-summary-card">
+              <div class="card-header-icon">
+                <div class="icon-box icon-box-detected">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    <line x1="11" y1="8" x2="11" y2="14"></line>
+                    <line x1="8" y1="11" x2="14" y2="11"></line>
+                  </svg>
+                </div>
+                <div>
+                  <h4 class="card-heading" data-i18n="result.whatDetectedTitle">What Was Detected?</h4>
+                  <span class="card-subheading">Visual Foliar Pathology Evidence</span>
+                </div>
+              </div>
+              <p class="detected-desc-lead" id="whatDetectedDesc">
+                <!-- Dynamically populated from data service -->
+              </p>
+            </div>
+
+            <!-- 2-COLUMN GRID: COMMON SYMPTOMS & WHY IT MAY HAVE HAPPENED -->
+            <div class="result-cards-grid">
+              <!-- COMMON SYMPTOMS -->
+              <div class="guidance-card">
+                <div class="card-header-icon">
+                  <div class="icon-box icon-box-symptoms">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                      <circle cx="12" cy="12" r="10"></circle>
+                      <line x1="12" y1="8" x2="12" y2="12"></line>
+                      <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                    </svg>
+                  </div>
+                  <h4 class="card-heading" data-i18n="result.symptomsTitle">Common Symptoms</h4>
+                </div>
+                <p class="guidance-lead-desc" id="symptomsDesc"></p>
+                <ul class="guidance-list" id="symptomsList"></ul>
+              </div>
+
+              <!-- WHY IT MAY HAVE HAPPENED (Cautious Contributing Factors) -->
+              <div class="guidance-card">
+                <div class="card-header-icon">
+                  <div class="icon-box icon-box-causes">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                      <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                      <line x1="12" y1="9" x2="12" y2="13"></line>
+                      <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                    </svg>
+                  </div>
+                  <h4 class="card-heading" data-i18n="result.causesTitle">Why It May Have Happened</h4>
+                </div>
+                <p class="guidance-lead-desc" id="causesDesc"></p>
+                <ul class="guidance-list" id="causesList"></ul>
+              </div>
+            </div>
+
+            <!-- WHAT TO DO NOW (Numbered Sequential Action Steps) -->
+            <div class="guidance-card action-plan-card">
+              <div class="card-header-icon">
+                <div class="icon-box icon-box-action">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                    <polyline points="9 11 12 14 22 4"></polyline>
+                    <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+                  </svg>
+                </div>
+                <div>
+                  <h4 class="card-heading" data-i18n="result.actionPlanTitle">What To Do Now</h4>
+                  <span class="card-subheading">Step-by-Step Grower Action Protocol</span>
+                </div>
+              </div>
+              <ol class="action-steps-ordered-list" id="actionStepsList">
+                <!-- 5 sequential numbered steps dynamically populated -->
+              </ol>
+            </div>
+
+            <!-- TREATMENT & CONTROL (5 Structured Parts) -->
+            <div class="treatment-control-card">
+              <div class="card-header-icon">
+                <div class="icon-box icon-box-treatment">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                  </svg>
+                </div>
+                <div>
+                  <h4 class="card-heading" data-i18n="result.treatmentTitle">Treatment & Control</h4>
+                  <span class="card-subheading">Integrated Pest Management (IPM) Five-Pillar Strategy</span>
+                </div>
+              </div>
+              <div class="treatment-parts-grid">
+                <!-- Part 1: Immediate Cultural Control -->
+                <div class="treatment-part-box">
+                  <div class="part-badge">Part 1</div>
+                  <h5 class="part-title" data-i18n="result.immediateControl">Immediate Cultural Control</h5>
+                  <p class="part-desc" id="treatmentImmediate"></p>
+                </div>
+                <!-- Part 2: Non-Chemical & Cultural -->
+                <div class="treatment-part-box">
+                  <div class="part-badge">Part 2</div>
+                  <h5 class="part-title" data-i18n="result.nonChemicalControl">Non-Chemical & Cultural</h5>
+                  <p class="part-desc" id="treatmentNonChemical"></p>
+                </div>
+                <!-- Part 3: Biological & Organic Agents -->
+                <div class="treatment-part-box">
+                  <div class="part-badge">Part 3</div>
+                  <h5 class="part-title" data-i18n="result.biologicalControl">Biological & Organic Agents</h5>
+                  <p class="part-desc" id="treatmentBiological"></p>
+                </div>
+                <!-- Part 4: Chemical Options (Strict Warning, No Fabricated Doses) -->
+                <div class="treatment-part-box treatment-chemical-box">
+                  <div class="part-badge part-badge-amber">Part 4</div>
+                  <h5 class="part-title" data-i18n="result.chemicalControl">Chemical Options (Follow Official Product Label)</h5>
+                  <p class="part-desc" id="treatmentChemical"></p>
+                  <div class="chemical-warning-callout">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="flex-shrink:0;">
+                      <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                      <line x1="12" y1="9" x2="12" y2="13"></line>
+                      <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                    </svg>
+                    <span data-i18n="result.chemicalWarning">CRITICAL NOTICE: Always read and follow the official manufacturer container label for registered rates, crop timings, and withholding periods. Never apply unverified or improvised chemical doses.</span>
+                  </div>
+                </div>
+                <!-- Part 5: Safety & Protective Equipment (PPE) -->
+                <div class="treatment-part-box">
+                  <div class="part-badge">Part 5</div>
+                  <h5 class="part-title" data-i18n="result.safetyPpe">Safety & Protective Equipment (PPE)</h5>
+                  <p class="part-desc" id="treatmentSafety"></p>
+                </div>
+              </div>
+            </div>
+
+            <!-- PREVENTION -->
+            <div class="guidance-card">
+              <div class="card-header-icon">
+                <div class="icon-box icon-box-prevention">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                  </svg>
+                </div>
+                <h4 class="card-heading" data-i18n="result.preventionTitle">Prevention</h4>
+              </div>
+              <p class="guidance-lead-desc" id="preventionDesc"></p>
+              <ul class="guidance-list" id="preventionList"></ul>
+            </div>
+
+            <!-- SUSTAINABLE CROP TIP BANNER -->
+            <div class="sustainable-tip-banner">
+              <div class="tip-icon">🌱</div>
+              <div>
+                <div class="tip-tag" data-i18n="result.tipTag">Sustainable Crop Tip</div>
+                <div class="tip-text" id="sustainableTipText">
+                  Prefer preventive monitoring, good spacing, sanitation and targeted intervention instead of unnecessary chemical use.
+                </div>
+              </div>
+            </div>
+
+            <!-- IMPORTANT NOTE ADVISORY -->
+            <div class="result-important-note-box">
+              <div class="important-note-icon">⚠️</div>
+              <div>
+                <strong class="important-note-title" data-i18n="result.importantNoteTitle">Important Note</strong>
+                <p class="important-note-text" id="importantNoteText" data-i18n="result.disclaimer">
+                  IMPORTANT: PaudhCare AI provides preliminary decision support. Always consult a certified local agronomist or extension professional before applying chemical treatments.
+                </p>
+              </div>
+            </div>
+
+            <!-- AGRONOMIC SOURCES & REFERENCES BOX -->
+            <div class="result-sources-box">
+              <div class="sources-icon">📚</div>
+              <div>
+                <strong class="sources-title" data-i18n="result.sourcesTitle">Verified Agronomic Sources & References</strong>
+                <p class="sources-desc" id="resultSourcesText" data-i18n="result.sourcesDesc">
+                  Guidance synthesized from peer-reviewed agricultural extensions including ICAR, FAO, and PlantVillage protocols.
+                </p>
+              </div>
+            </div>
+          </div>
+          <!-- /#validDiagnosisContent -->
+
+            <!-- ANALYZE ANOTHER LEAF & DOWNLOAD REPORT ACTIONS -->
+            <div class="result-footer-actions">
+              <button type="button" class="btn btn-primary btn-lg" id="openReportModalBtn" title="Download Official Multilingual PDF Report">
+                <span class="btn-icon" style="font-size: 1.15rem; margin-right: 0.35rem;">📄</span>
+                <span data-i18n="report.downloadBtn">Download Report</span>
+              </button>
+              <button type="button" class="btn btn-secondary btn-lg" id="analyzeAnotherBtn">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                  <path d="M3 2v6h6"></path>
+                  <path d="M21 12A9 9 0 0 0 6 5.3L3 8"></path>
+                  <path d="M21 22v-6h-6"></path>
+                  <path d="M3 12a9 9 0 0 0 15 6.7l3-2.7"></path>
+                </svg>
+                <span data-i18n="result.resetBtn">Analyze Another Leaf</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         HOW IT WORKS (5-STEP WORKFLOW)
+         ====================================================================== -->
+    <section class="section" id="how-it-works" style="background-color: var(--bg-surface-muted);">
+      <div class="container">
+        <div class="section-header">
+          <div class="pill-badge pill-badge-green" data-i18n="workflow.badge">5-Step Workflow</div>
+          <h2 class="section-title" data-i18n="workflow.title">How PaudhCare Works</h2>
+          <p class="section-subtitle" data-i18n="workflow.subtitle">
+            From leaf photography to sustainable, field-ready crop care decisions in five transparent steps.
+          </p>
+        </div>
+
+        <div class="workflow-track">
+          <!-- Step 01 -->
+          <div class="workflow-card">
+            <div class="step-number">01</div>
+            <div class="step-icon-bubble">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="17 8 12 3 7 8"></polyline>
+                <line x1="12" y1="3" x2="12" y2="15"></line>
+              </svg>
+            </div>
+            <h3 class="step-title" data-i18n="workflow.s1Title">Upload</h3>
+            <p class="step-desc" data-i18n="workflow.s1Desc">Farmer or researcher captures and uploads a clear, well-lit photograph of the plant leaf.</p>
+          </div>
+
+          <!-- Step 02 -->
+          <div class="workflow-card">
+            <div class="step-number">02</div>
+            <div class="step-icon-bubble">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                <circle cx="12" cy="12" r="3"></circle>
+                <path d="M3 7V5a2 2 0 0 1 2-2h2"></path>
+                <path d="M17 3h2a2 2 0 0 1 2 2v2"></path>
+                <path d="M21 17v2a2 2 0 0 1-2 2h-2"></path>
+                <path d="M7 21H5a2 2 0 0 1-2-2v-2"></path>
+              </svg>
+            </div>
+            <h3 class="step-title" data-i18n="workflow.s2Title">AI Vision</h3>
+            <p class="step-desc" data-i18n="workflow.s2Desc">Computer vision algorithms examine leaf texture, pigmentation gradients, and lesion contours.</p>
+          </div>
+
+          <!-- Step 03 -->
+          <div class="workflow-card">
+            <div class="step-number">03</div>
+            <div class="step-icon-bubble">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+            </div>
+            <h3 class="step-title" data-i18n="workflow.s3Title">Identify</h3>
+            <p class="step-desc" data-i18n="workflow.s3Desc">Multimodal patterns are classified against recognized plant disease profiles.</p>
+          </div>
+
+          <!-- Step 04 -->
+          <div class="workflow-card">
+            <div class="step-number">04</div>
+            <div class="step-icon-bubble">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+              </svg>
+            </div>
+            <h3 class="step-title" data-i18n="workflow.s4Title">Guide</h3>
+            <p class="step-desc" data-i18n="workflow.s4Desc">The platform synthesizes structured prevention strategies and practical stewardship actions.</p>
+          </div>
+
+          <!-- Step 05 -->
+          <div class="workflow-card">
+            <div class="step-number">05</div>
+            <div class="step-icon-bubble">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"></path>
+                <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"></path>
+              </svg>
+            </div>
+            <h3 class="step-title" data-i18n="workflow.s5Title">Act Sustainably</h3>
+            <p class="step-desc" data-i18n="workflow.s5Desc">Farmers implement targeted, eco-friendly cultural interventions to safeguard crop yields.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         AI TECHNOLOGY SECTION ("AI Workflow — Prototype")
+         ====================================================================== -->
+    <section class="section section-dark" id="ai-technology">
+      <div class="container">
+        <div class="section-header">
+          <div class="pill-badge pill-badge-dark" data-i18n="tech.badge">Conceptual Architecture</div>
+          <h2 class="section-title" data-i18n="tech.title">AI Workflow — Prototype</h2>
+          <p class="section-subtitle" data-i18n="tech.subtitle">
+            A transparent architectural view of the multimodal computer vision and decision support pipeline.
+          </p>
+        </div>
+
+        <!-- Visual Flow Diagram -->
+        <div class="pipeline-flow-diagram">
+          <div class="pipeline-nodes-row">
+            <!-- Node 1 -->
+            <div class="pipeline-node">
+              <div class="pipeline-node-icon">📷</div>
+              <div class="pipeline-node-title" data-i18n="tech.node1">Leaf Image</div>
+              <div class="pipeline-node-sub" data-i18n="tech.node1Sub">Specimen Upload</div>
+            </div>
+
+            <div class="pipeline-connector">➔</div>
+
+            <!-- Node 2 -->
+            <div class="pipeline-node">
+              <div class="pipeline-node-icon">🔬</div>
+              <div class="pipeline-node-title" data-i18n="tech.node2">Image Analysis</div>
+              <div class="pipeline-node-sub" data-i18n="tech.node2Sub">Pre-processing</div>
+            </div>
+
+            <div class="pipeline-connector">➔</div>
+
+            <!-- Node 3 -->
+            <div class="pipeline-node">
+              <div class="pipeline-node-icon">🔍</div>
+              <div class="pipeline-node-title" data-i18n="tech.node3">Pattern Recognition</div>
+              <div class="pipeline-node-sub" data-i18n="tech.node3Sub">Feature Matching</div>
+            </div>
+
+            <div class="pipeline-connector">➔</div>
+
+            <!-- Node 4 -->
+            <div class="pipeline-node">
+              <div class="pipeline-node-icon">⚠️</div>
+              <div class="pipeline-node-title" data-i18n="tech.node4">Possible Disease ID</div>
+              <div class="pipeline-node-sub" data-i18n="tech.node4Sub">Classification</div>
+            </div>
+
+            <div class="pipeline-connector">➔</div>
+
+            <!-- Node 5 -->
+            <div class="pipeline-node">
+              <div class="pipeline-node-icon">🌱</div>
+              <div class="pipeline-node-title" data-i18n="tech.node5">Crop-Care Guidance</div>
+              <div class="pipeline-node-sub" data-i18n="tech.node5Sub">Decision Support</div>
+            </div>
+          </div>
+
+          <!-- Prototype Transparency Note -->
+          <div class="pipeline-notice" data-i18n="tech.notice">
+            Note: This interactive prototype currently demonstrates the intended architectural pipeline in Demo Mode. Live disease detection requires connection to a trained or multimodal AI vision model.
+          </div>
+        </div>
+
+        <!-- Detailed Architectural Pillars -->
+        <div class="tech-breakdown-grid">
+          <div class="tech-card">
+            <h3 class="tech-card-title">
+              <span>🔬</span> <span data-i18n="tech.card1Title">Image Understanding</span>
+            </h3>
+            <p class="tech-card-desc" data-i18n="tech.card1Desc">
+              Visual feature extractors analyze leaf texture, chlorosis patterns, venation structures, and necrotic borders without manual feature engineering.
+            </p>
+          </div>
+
+          <div class="tech-card">
+            <h3 class="tech-card-title">
+              <span>🏷️</span> <span data-i18n="tech.card2Title">Classification</span>
+            </h3>
+            <p class="tech-card-desc" data-i18n="tech.card2Desc">
+              Deep convolutional neural networks and vision transformers compare observed symptom patterns against structured agronomic pathogen profiles.
+            </p>
+          </div>
+
+          <div class="tech-card">
+            <h3 class="tech-card-title">
+              <span>📄</span> <span data-i18n="tech.card3Title">Information Generation</span>
+            </h3>
+            <p class="tech-card-desc" data-i18n="tech.card3Desc">
+              Language models synthesize technical pathology data into clear, farmer-friendly prevention advisories and cultural crop protection strategies.
+            </p>
+          </div>
+
+          <div class="tech-card">
+            <h3 class="tech-card-title">
+              <span>🤝</span> <span data-i18n="tech.card4Title">Decision Support</span>
+            </h3>
+            <p class="tech-card-desc" data-i18n="tech.card4Desc">
+              AI provides actionable advisory recommendations to support human farmers, reinforcing that final diagnostic authority rests with certified agronomists.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         SDG 2 / SUSTAINABILITY SECTION
+         ====================================================================== -->
+    <section class="section" id="sustainability">
+      <div class="container">
+        <div class="section-header">
+          <div class="pill-badge pill-badge-gold" data-i18n="sdg.badge">United Nations Goal</div>
+          <h2 class="section-title" data-i18n="sdg.title">SDG 2 — Zero Hunger</h2>
+          <p class="section-subtitle" data-i18n="sdg.subtitle">
+            PaudhCare AI is designed to support sustainable agriculture by helping users identify possible crop-health issues earlier and access responsible crop-care information.
+          </p>
+        </div>
+
+        <!-- SDG Featured Banner -->
+        <div class="sdg-hero-card">
+          <div class="sdg-left">
+            <div class="sdg-badge-large">
+              <span class="sdg-num">2</span>
+              <span class="sdg-label" data-i18n="hero.badge3">Zero Hunger</span>
+            </div>
+            <div style="font-size: 0.95rem; font-weight: 600; opacity: 0.95;" data-i18n="sdg.badge">
+              United Nations Sustainable Development Goal
+            </div>
+          </div>
+          <div class="sdg-right">
+            <p class="sdg-quote" data-i18n="sdg.quote">
+              "By enabling timely visual assessment of crop threats, PaudhCare AI contributes to reducing preventable harvest losses and promoting durable agroecosystems."
+            </p>
+          </div>
+        </div>
+
+        <!-- 3 Supporting SDG Targets -->
+        <div class="sdg-targets-grid">
+          <div class="sdg-target-card">
+            <span class="target-code" data-i18n="sdg.t1Code">Target 2.4</span>
+            <h3 class="target-title" data-i18n="sdg.t1Title">Sustainable Food Production</h3>
+            <p class="target-text" data-i18n="sdg.t1Text">
+              Ensuring sustainable food production systems and resilient agricultural practices that strengthen capacity for adaptation to climate challenges and pest outbreaks.
+            </p>
+          </div>
+
+          <div class="sdg-target-card">
+            <span class="target-code" data-i18n="sdg.t2Code">Target 2.3</span>
+            <h3 class="target-title" data-i18n="sdg.t2Title">Smallholder Empowerment</h3>
+            <p class="target-text" data-i18n="sdg.t2Text">
+              Providing accessible, digital diagnostic tools that help small-scale agricultural producers protect crop productivity and avoid unnecessary economic loss.
+            </p>
+          </div>
+
+          <div class="sdg-target-card">
+            <span class="target-code" data-i18n="sdg.t3Code">Target 2.A</span>
+            <h3 class="target-title" data-i18n="sdg.t3Title">Knowledge Accessibility</h3>
+            <p class="target-text" data-i18n="sdg.t3Text">
+              Democratizing scientific plant pathology insights, bridging the information gap between agricultural research institutions and frontline field managers.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         SAFETY & ACCURACY SECTION
+         ====================================================================== -->
+    <section class="section" id="responsible-ai" data-section-alias="safety-accuracy" style="background-color: var(--bg-surface-muted);">
+      <div class="container">
+        <div class="section-header">
+          <div class="pill-badge pill-badge-green" data-i18n="safety.badge">Safety & Accuracy</div>
+          <h2 class="section-title" data-i18n="safety.title">Safety & Accuracy</h2>
+          <p class="section-subtitle" data-i18n="safety.subtitle">
+            Transparent, grower-centric intelligence designed to support informed decisions in the field.
+          </p>
+        </div>
+
+        <div class="responsible-grid">
+          <!-- Pillar 1: Human-in-the-Loop -->
+          <div class="responsible-card">
+            <div class="responsible-icon-box">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                <circle cx="9" cy="7" r="4"></circle>
+                <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+              </svg>
+            </div>
+            <h3 class="responsible-card-title" data-i18n="safety.c1Title">HUMAN-IN-THE-LOOP</h3>
+            <p class="responsible-card-desc" data-i18n="safety.c1Desc">
+              AI supports, does not replace, experienced growers or extension professionals. Final diagnostic authority and intervention decisions remain with certified agronomists.
+            </p>
+          </div>
+
+          <!-- Pillar 2: Supportive Tool -->
+          <div class="responsible-card">
+            <div class="responsible-icon-box">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+              </svg>
+            </div>
+            <h3 class="responsible-card-title" data-i18n="safety.c2Title">SUPPORTIVE TOOL</h3>
+            <p class="responsible-card-desc" data-i18n="safety.c2Desc">
+              Designed for early visual screening and rapid access to agronomic references, promoting thoughtful observation rather than destructive over-reaction.
+            </p>
+          </div>
+
+          <!-- Pillar 3: When to Consult an Expert -->
+          <div class="responsible-card">
+            <div class="responsible-icon-box">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="8" x2="12" y2="12"></line>
+                <line x1="12" y1="16" x2="12.01" y2="16"></line>
+              </svg>
+            </div>
+            <h3 class="responsible-card-title" data-i18n="safety.c3Title">WHEN TO CONSULT AN EXPERT</h3>
+            <p class="responsible-card-desc" data-i18n="safety.c3Desc">
+              In cases of rapid disease spread, severe foliar collapse, unfamiliar symptoms, or commercial yield risks, immediately consult local agricultural extension officers.
+            </p>
+          </div>
+
+          <!-- Pillar 4: Non-Destructive Initial Actions -->
+          <div class="responsible-card">
+            <div class="responsible-icon-box">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"></path>
+                <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"></path>
+              </svg>
+            </div>
+            <h3 class="responsible-card-title" data-i18n="safety.c4Title">NON-DESTRUCTIVE INITIAL ACTIONS</h3>
+            <p class="responsible-card-desc" data-i18n="safety.c4Desc">
+              Start with sanitation, canopy airflow, physical isolation, and cultural hygiene before considering chemical interventions.
+            </p>
+          </div>
+        </div>
+
+        <!-- Prominent Mandatory Disclaimer -->
+        <div class="disclaimer-banner">
+          <div class="disclaimer-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+              <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path>
+              <line x1="12" y1="9" x2="12" y2="13"></line>
+              <line x1="12" y1="17" x2="12.01" y2="17"></line>
+            </svg>
+          </div>
+          <div>
+            <div class="disclaimer-title" data-i18n="resp.disclaimerTitle">Agricultural Decision Support Disclaimer</div>
+            <p class="disclaimer-body" data-i18n="resp.disclaimerBody">
+              "PaudhCare AI provides AI-based educational support and should not be treated as a professional agricultural diagnosis. For serious crop disease or treatment decisions, consult a qualified agricultural expert."
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         IMPACT SECTION
+         ====================================================================== -->
+    <section class="section" id="impact">
+      <div class="container">
+        <div class="section-header">
+          <div class="pill-badge pill-badge-green" data-i18n="impact.badge">Sustainable Future</div>
+          <h2 class="section-title" data-i18n="impact.title">Impact Themes</h2>
+          <p class="section-subtitle" data-i18n="impact.subtitle">
+            Guiding smallholders and agricultural communities toward proactive, environmentally safe crop stewardship.
+          </p>
+        </div>
+
+        <div class="impact-grid">
+          <div class="impact-card">
+            <div class="impact-icon-circle">🌱</div>
+            <h3 class="impact-card-title" data-i18n="impact.c1Title">Sustainable Agriculture</h3>
+            <p class="impact-card-desc" data-i18n="impact.c1Desc">
+              Fostering cultural and biological disease management practices that minimize dependence on synthetic chemical sprays and protect living soils.
+            </p>
+          </div>
+
+          <div class="impact-card">
+            <div class="impact-icon-circle">📊</div>
+            <h3 class="impact-card-title" data-i18n="impact.c2Title">Faster Information Access</h3>
+            <p class="impact-card-desc" data-i18n="impact.c2Desc">
+              Shortening the critical time window between first symptom observation and actionable field guidance, helping arrest rapid pathogen spread.
+            </p>
+          </div>
+
+          <div class="impact-card">
+            <div class="impact-icon-circle">🌾</div>
+            <h3 class="impact-card-title" data-i18n="impact.c3Title">Crop Health Awareness</h3>
+            <p class="impact-card-desc" data-i18n="impact.c3Desc">
+              Equipping growers with educational symptom profiles to improve seasonal monitoring vigilance across staple food crops.
+            </p>
+          </div>
+
+          <div class="impact-card">
+            <div class="impact-icon-circle">🤖</div>
+            <h3 class="impact-card-title" data-i18n="impact.c4Title">Responsible AI Adoption</h3>
+            <p class="impact-card-desc" data-i18n="impact.c4Desc">
+              Demonstrating transparent, ethical machine learning deployment that serves human societal well-being and aligns with global UN goals.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         ABOUT PRODUCT SECTION (FOCUSED ON PRODUCT)
+         ====================================================================== -->
+    <section class="section" id="about" style="background-color: var(--bg-surface-muted);">
+      <div class="container">
+        <div class="about-card-container">
+          <div>
+            <div class="pill-badge pill-badge-green" data-i18n="about.badge">Product Overview</div>
+            <h2 class="section-title" style="text-align: left; margin-bottom: 1rem;" data-i18n="about.title">About PaudhCare AI</h2>
+            <p style="font-size: 1.1rem; font-weight: 500; color: var(--text-main); line-height: 1.6; margin-bottom: 1.25rem;" data-i18n="about.lead">
+              PaudhCare AI is an AI-powered plant health support platform that helps users identify possible plant diseases from leaf images and provides sustainable crop-care guidance.
+            </p>
+            <p style="color: var(--text-muted); line-height: 1.6; margin-bottom: 1.5rem;" data-i18n="about.body">
+              Designed as a modern decision-support tool, PaudhCare AI combines visual pattern analysis with responsible agronomic best practices to support SDG 2 (Zero Hunger) by preventing avoidable crop loss.
+            </p>
+            <div class="about-subnote" data-i18n="about.subnote">
+              Developed as part of the 1M1B AI for Sustainability Virtual Internship.
+            </div>
+          </div>
+
+          <div class="about-features-list">
+            <div class="about-feature-item">
+              <div class="about-feature-icon">🔍</div>
+              <div class="about-feature-text">
+                <strong data-i18n="about.f1Title">Early Foliar Detection</strong>
+                <p data-i18n="about.f1Desc">Identifies visible leaf anomalies before localized infections spread across fields.</p>
+              </div>
+            </div>
+
+            <div class="about-feature-item">
+              <div class="about-feature-icon">🌿</div>
+              <div class="about-feature-text">
+                <strong data-i18n="about.f2Title">Sustainable Stewardship</strong>
+                <p data-i18n="about.f2Desc">Prioritizes cultural and physical preventive actions over indiscriminate chemical applications.</p>
+              </div>
+            </div>
+
+            <div class="about-feature-item">
+              <div class="about-feature-icon">📖</div>
+              <div class="about-feature-text">
+                <strong data-i18n="about.f3Title">Accessible Agronomy</strong>
+                <p data-i18n="about.f3Desc">Bridges the knowledge gap for smallholders with plain-language symptoms and practical tips.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ========================================================================
+       FOOTER
+       ======================================================================== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand-col">
+          <div class="footer-brand-title">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"></path>
+              <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"></path>
+            </svg>
+            <span>PaudhCare AI</span>
+          </div>
+          <p class="footer-tagline" data-i18n="footer.tagline">Smarter Crop Care. Powered by AI.</p>
+          <p class="footer-brand-desc" data-i18n="footer.desc">
+            PaudhCare AI is an AI-powered plant health support platform that helps users identify possible plant diseases from leaf images and provides sustainable crop-care guidance.
+          </p>
+          <div class="footer-dev-badge">
+            <span class="developer-name">Developed by Prince</span>
+          </div>
+        </div>
+
+        <div class="footer-nav-col">
+          <h4 class="footer-col-title" data-i18n="footer.navTitle">Navigation</h4>
+          <ul class="footer-links-list">
+            <li><a href="#home" data-i18n="nav.home">Home</a></li>
+            <li><a href="#analyzer" data-i18n="nav.analyzer">Analyzer</a></li>
+            <li><a href="#how-it-works" data-i18n="nav.howItWorks">How It Works</a></li>
+            <li><a href="#ai-technology" data-i18n="nav.aiPipeline">AI Pipeline</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-frameworks-col">
+          <h4 class="footer-col-title" data-i18n="footer.frameworksTitle">Frameworks</h4>
+          <ul class="footer-links-list">
+            <li><a href="#sustainability" data-i18n="nav.sustainability">SDG 2 Zero Hunger</a></li>
+            <li><a href="#responsible-ai" data-i18n="nav.responsibleAi">Responsible AI</a></li>
+            <li><a href="#impact" data-i18n="impact.title">Impact Themes</a></li>
+            <li><a href="#about" data-i18n="nav.about">About PaudhCare</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div class="footer-copyright">
+          &copy; <span id="currentYear">2026</span> PaudhCare AI. <span data-i18n="footer.rights">All rights reserved.</span>
+        </div>
+        <div class="footer-credit">
+          <span class="developer-name">Developed by Prince</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ========================================================================
+       AI MODEL SETTINGS MODAL (GEMINI VISION API CONFIGURATION)
+       ======================================================================== -->
+  <div class="modal-backdrop" id="apiSettingsModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-dialog" style="max-width: 520px;">
+      <div class="modal-header">
+        <h3 class="modal-title" id="modalTitle">AI Vision Model Configuration</h3>
+        <button class="modal-close-btn" id="closeModalBtn" aria-label="Close settings modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p style="margin-bottom: 0.85rem; font-size: 0.95rem; line-height: 1.5; color: var(--color-gray-700);">
+          PaudhCare AI utilizes <strong>Google Gemini Multimodal Vision</strong> for live plant pathology assessment, crop identification, and multilingual treatment guidance.
+        </p>
+
+        <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 0.85rem 1rem; margin-bottom: 1.25rem;">
+          <div style="font-weight: 600; color: #166534; font-size: 0.875rem; margin-bottom: 0.35rem;">Recommended Configuration (.env)</div>
+          <div style="font-size: 0.825rem; color: #15803d; line-height: 1.45;">
+            Configure your API key in the project's <code>.env</code> file:
+            <pre style="background: #ffffff; border: 1px solid #dcfce7; padding: 0.4rem 0.6rem; border-radius: 4px; margin: 0.4rem 0; font-size: 0.8rem; overflow-x: auto;"><code>GEMINI_API_KEY=your_gemini_api_key_here</code></pre>
+            Keys saved in <code>.env</code> are secured server-side and automatically picked up.
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 0.75rem;">
+          <label for="apiKeyInput" class="form-label" style="display: flex; justify-content: space-between; align-items: center;">
+            <span>Or Enter Gemini API Key Directly:</span>
+            <a href="https://aistudio.google.com/" target="_blank" rel="noopener noreferrer" style="font-size: 0.8rem; color: var(--color-primary-600); text-decoration: underline;">Get free key &rarr;</a>
+          </label>
+          <input type="password" id="apiKeyInput" class="form-input" placeholder="AIzaSy..." autocomplete="off" />
+        </div>
+        <p style="font-size: 0.8rem; color: var(--color-gray-500); margin-top: 0.25rem;">
+          Keys entered here are securely saved in your browser session for this site.
+        </p>
+      </div>
+      <div style="display: flex; justify-content: flex-end; gap: 0.75rem; margin-top: 1rem;">
+        <button class="btn btn-secondary btn-sm" id="cancelModalBtn">Cancel</button>
+        <button class="btn btn-primary btn-sm" id="saveApiKeyBtn">Save & Apply</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       DEVICE CAMERA CAPTURE MODAL (Live Viewfinder + Review)
+       ======================================================================== -->
+  <div class="modal-backdrop camera-modal-backdrop" id="cameraModal" role="dialog" aria-modal="true" aria-labelledby="cameraModalTitle">
+    <div class="modal-dialog camera-modal-dialog">
+      <div class="modal-header camera-modal-header">
+        <div class="camera-modal-header-text">
+          <div class="camera-modal-badge">
+            <span class="camera-badge-icon">📷</span>
+            <span>Live Camera Diagnostic</span>
+          </div>
+          <h3 class="modal-title camera-modal-title" id="cameraModalTitle" data-i18n="camera.modalTitle">Take Plant Photo</h3>
+        </div>
+        <button type="button" class="modal-close-btn camera-close-btn" id="closeCameraModalBtn" aria-label="Close camera modal">&times;</button>
+      </div>
+      <div class="modal-body camera-modal-body">
+        <p class="camera-modal-instruction" id="cameraInstructionText" data-i18n="camera.instruction">
+          Position the leaf clearly inside the frame for best diagnostic accuracy.
+        </p>
+
+        <!-- Camera Error Alert Banner -->
+        <div class="camera-alert" id="cameraErrorAlert" style="display:none;" role="alert">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+          </svg>
+          <span id="cameraErrorMsg" data-i18n="camera.errorMsg">Unable to access device camera. Please check camera permissions or upload an image file.</span>
+        </div>
+
+        <!-- Viewfinder & Overlay Guide -->
+        <div class="camera-viewfinder-wrapper" id="cameraViewfinderWrapper">
+          <video id="cameraVideo" class="camera-video-feed" autoplay playsinline muted></video>
+          <div class="camera-overlay-frame" id="cameraOverlayFrame">
+            <div class="camera-guide-corner top-left"></div>
+            <div class="camera-guide-corner top-right"></div>
+            <div class="camera-guide-corner bottom-left"></div>
+            <div class="camera-guide-corner bottom-right"></div>
+            <span class="camera-guide-label">Align Leaf In Frame</span>
+          </div>
+          <img id="cameraCapturedPreview" class="camera-captured-preview" style="display:none;" alt="Captured leaf photo" />
+          <canvas id="cameraCanvas" style="display:none;"></canvas>
+        </div>
+      </div>
+      <div class="modal-footer camera-modal-footer">
+        <!-- Live Camera Controls -->
+        <div class="camera-live-controls" id="cameraLiveControls">
+          <button type="button" class="btn btn-secondary btn-md" id="btnCancelCamera" data-i18n="camera.cancelBtn">Cancel</button>
+          <button type="button" class="btn btn-primary btn-md" id="btnCapturePhoto">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <circle cx="12" cy="12" r="4"></circle>
+            </svg>
+            <span data-i18n="camera.captureBtn">Capture Photo</span>
+          </button>
+        </div>
+
+        <!-- Review Controls (Post Capture: exactly ✓ Upload, ✕ Reject, ↻ Retake) -->
+        <div class="camera-review-controls" id="cameraReviewControls" style="display:none;">
+          <button type="button" class="btn btn-danger-subtle btn-md" id="btnRejectCapture">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+            <span data-i18n="camera.rejectBtn">✕ Reject</span>
+          </button>
+          <button type="button" class="btn btn-secondary btn-md" id="btnRetakeCapture">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+              <polyline points="23 4 23 10 17 10"></polyline>
+              <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+            </svg>
+            <span data-i18n="camera.retakeBtn">↻ Retake</span>
+          </button>
+          <button type="button" class="btn btn-primary btn-md" id="btnUploadCapture">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+            <span data-i18n="camera.uploadBtn">✓ Upload</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       REPORT LANGUAGE SELECTION MODAL (23 Official Indian Languages)
+       ======================================================================== -->
+  <div class="modal-backdrop report-modal-backdrop" id="reportLangModal" role="dialog" aria-modal="true" aria-labelledby="reportModalTitle">
+    <div class="modal-dialog report-modal-dialog">
+      <div class="modal-header report-modal-header">
+        <div class="report-modal-header-text">
+          <div class="report-modal-badge">
+            <span class="report-badge-icon">📄</span>
+            <span>A4 Plant Health Advisory</span>
+          </div>
+          <h3 class="modal-title report-modal-title" id="reportModalTitle">Choose Report Language</h3>
+        </div>
+        <button type="button" class="modal-close-btn report-close-btn" id="closeReportModalBtn" aria-label="Close report language selector">&times;</button>
+      </div>
+      <div class="modal-body report-modal-body">
+        <p class="report-modal-subtitle">
+          Select any of the 23 official Indian languages for your downloadable PDF report. The report is compiled with your original uploaded specimen and comprehensive agronomic guidance.
+        </p>
+
+        <!-- Search Input -->
+        <div class="report-lang-search-box">
+          <svg class="report-search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input type="text" id="reportLangSearch" class="report-search-input" placeholder="Search 23 Indian languages (e.g. Hindi, Bengali, Tamil, Urdu)..." autocomplete="off" />
+        </div>
+
+        <!-- Scrollable 23-Language Grid -->
+        <div class="report-lang-grid" id="reportLangList" role="listbox">
+          <!-- Populated dynamically by PaudhCareReportGenerator -->
+        </div>
+      </div>
+      <div class="modal-footer report-modal-footer">
+        <button type="button" class="btn btn-secondary btn-md" id="cancelReportModalBtn">Cancel</button>
+        <button type="button" class="btn btn-primary btn-md" id="confirmDownloadReportBtn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="7 10 12 15 17 10"></polyline>
+            <line x1="12" y1="15" x2="12" y2="3"></line>
+          </svg>
+          <span>Download PDF Report</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       MOBILE LANGUAGE BOTTOM SHEET MODAL (Searchable 23 Languages)
+       ======================================================================== -->
+  <div class="lang-bottom-sheet-backdrop" id="langBottomSheetBackdrop" aria-hidden="true">
+    <div class="lang-bottom-sheet" id="langBottomSheet" role="dialog" aria-modal="true" aria-labelledby="mobileSheetTitle">
+      <div class="bottom-sheet-drag-handle"></div>
+      <div class="bottom-sheet-header">
+        <h3 class="bottom-sheet-title" id="mobileSheetTitle" data-i18n="lang.selectorTitle">Select Language</h3>
+        <button type="button" class="btn-close-sheet" id="closeLangSheetBtn" aria-label="Close language selector">&times;</button>
+      </div>
+      <div class="lang-sheet-search-box">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <input type="text" class="lang-search-box-input" id="langSearchMobileInput" placeholder="Search 23 Indian languages..." autocomplete="off" />
+      </div>
+      <div class="lang-options-list sheet-list" id="langOptionsListMobile" role="listbox">
+        <!-- Populated dynamically via JS with all 23 languages -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/vendor/html2pdf.bundle.min.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/report.js"></script>
+  <script src="js/analyzer.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

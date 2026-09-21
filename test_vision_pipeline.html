@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>PaudhCare AI — Vision AI & Zero Tomato Fallback Test Suite</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      padding: 20px;
+      background: #f8fafc;
+    }
+    .test-header {
+      background: #14452f;
+      color: white;
+      padding: 20px 24px;
+      border-radius: 12px;
+      margin-bottom: 24px;
+    }
+    .test-summary {
+      display: flex;
+      gap: 16px;
+      margin-top: 12px;
+    }
+    .badge-stat {
+      padding: 6px 14px;
+      border-radius: 9999px;
+      font-weight: 700;
+      font-size: 0.9rem;
+    }
+    .badge-pass { background: #dcfce7; color: #166534; }
+    .badge-fail { background: #fee2e2; color: #991b1b; }
+    .test-results-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+      margin-bottom: 30px;
+    }
+    .test-results-table th, .test-results-table td {
+      padding: 12px 16px;
+      border-bottom: 1px solid #e2e8f0;
+      text-align: left;
+      font-size: 0.875rem;
+    }
+    .test-results-table th {
+      background: #f1f5f9;
+      font-weight: 700;
+      color: #334155;
+    }
+    .status-badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-weight: 700;
+      font-size: 0.75rem;
+    }
+    .status-pass { background: #16a34a; color: white; }
+    .status-fail { background: #dc2626; color: white; }
+    #mockDomWrapper {
+      border: 2px dashed #cbd5e1;
+      padding: 20px;
+      border-radius: 12px;
+      background: white;
+      margin-bottom: 24px;
+    }
+  </style>
+</head>
+<body>
+  <div class="test-header">
+    <h1 style="margin:0; font-size:1.5rem;">PaudhCare AI — Automated Verification Suite</h1>
+    <p style="margin:6px 0 0 0; opacity:0.85;">14-Scenario Verification: Zero Tomato Fallback, Two-Stage AI Vision, Error Handling & PDF Gating</p>
+    <div class="test-summary">
+      <span class="badge-stat badge-pass" id="summaryPassed">Passed: 0</span>
+      <span class="badge-stat badge-fail" id="summaryFailed">Failed: 0</span>
+      <span class="badge-stat" style="background:#e0f2fe; color:#0369a1;" id="summaryTotal">Total: 14</span>
+    </div>
+  </div>
+
+  <table class="test-results-table" id="resultsTable">
+    <thead>
+      <tr>
+        <th style="width: 60px;">#</th>
+        <th>Scenario</th>
+        <th style="width: 140px;">Expected Behavior</th>
+        <th style="width: 140px;">Observed Result</th>
+        <th style="width: 90px;">Status</th>
+      </tr>
+    </thead>
+    <tbody id="resultsBody"></tbody>
+  </table>
+
+  <!-- Live DOM Container for Analyzer Controller -->
+  <div id="mockDomWrapper">
+    <h3 style="margin-top:0;">Live Test Target Component</h3>
+
+    <div id="dropzoneCard" class="dropzone-card">
+      <input type="file" id="leafFileInput" style="display:none;" />
+      <div id="analyzerErrorAlert" style="display:none;" class="error-alert">
+        <span id="analyzerErrorText"></span>
+      </div>
+      <button type="button" id="btnUploadPhoto">Upload Photo</button>
+      <button type="button" id="btnTakePhoto">Take Photo</button>
+    </div>
+
+    <div id="previewContainer" style="display:none;">
+      <img id="previewImage" src="" />
+      <span id="previewBadge"></span>
+      <div id="scanLine"></div>
+      <button id="removeImageBtn">Remove</button>
+    </div>
+
+    <div id="analyzerActionsBar" style="display:none;">
+      <button id="analyzePlantBtn">Analyze Plant</button>
+    </div>
+
+    <div id="loadingDiagnosticBox" style="display:none;">
+      <div id="loadingTicker">Analyzing...</div>
+    </div>
+
+    <div id="resultDashboard" style="display:none;">
+      <!-- Result Header Card -->
+      <div class="result-header-card" id="resultHeaderCard">
+        <span class="pill-badge pill-badge-dark" id="resultTypeTag">AI Plant Health Assessment</span>
+        <span class="demo-disclaimer-tag" id="resultStatusBanner">Decision Support</span>
+        <div class="result-plant-sub" id="resultPlantName">Plant: Identifying...</div>
+        <h3 class="result-condition-title" id="resultCondition">AI Plant Health Assessment</h3>
+        <span class="pill-badge pill-badge-amber" id="resultSeverityBadge">Moderate Priority</span>
+        <span id="resultConfidence">Confidence: Not available</span>
+      </div>
+
+      <!-- Stage 1 Invalid / Low Quality Image Card -->
+      <div class="invalid-image-notice-card" id="invalidImageNoticeCard" style="display:none;">
+        <div class="invalid-notice-header">
+          <div class="invalid-notice-icon">⚠️</div>
+          <div>
+            <h4 class="invalid-notice-title" id="invalidNoticeTitle">Image Not Suitable for Plant Health Analysis</h4>
+            <p class="invalid-notice-subtitle" id="invalidNoticeSubtitle">Our two-stage vision system could not detect a valid plant specimen.</p>
+          </div>
+        </div>
+        <div class="invalid-reason-box">
+          <div class="invalid-reason-label">Reason Identified:</div>
+          <div class="invalid-reason-text" id="invalidReasonText"></div>
+        </div>
+        <div class="invalid-guidance-box">
+          <div class="invalid-guidance-title">How to Take a Photo That Can Be Analyzed:</div>
+          <ul class="invalid-guidance-list" id="invalidGuidanceList">
+            <li>Hold the camera 15–30 cm away from the affected leaf.</li>
+            <li>Ensure the leaf is in sharp focus with good, even daylight.</li>
+          </ul>
+        </div>
+        <div class="invalid-actions-row">
+          <button type="button" class="btn btn-primary" id="btnInvalidUpload">Upload Another Photo</button>
+          <button type="button" class="btn btn-secondary" id="btnInvalidRetake">Retake with Camera</button>
+        </div>
+      </div>
+
+      <!-- Valid Diagnosis Content Container -->
+      <div id="validDiagnosisContent">
+        <div class="detected-summary-card">
+          <p id="whatDetectedDesc"></p>
+        </div>
+        <p id="symptomsDesc"></p>
+        <ul id="symptomsList"></ul>
+        <p id="causesDesc"></p>
+        <ul id="causesList"></ul>
+        <ol id="actionStepsList"></ol>
+        <div id="treatmentImmediate"></div>
+        <div id="treatmentNonChemical"></div>
+        <div id="treatmentBiological"></div>
+        <div id="treatmentChemical"></div>
+        <div id="treatmentSafety"></div>
+        <p id="preventionDesc"></p>
+        <ul id="preventionList"></ul>
+        <div id="sustainableTipText"></div>
+        <p id="importantNoteText"></p>
+        <p id="resultSourcesText"></p>
+      </div>
+
+      <!-- Footer Actions -->
+      <div class="result-footer-actions">
+        <button type="button" id="openReportModalBtn">Download Report</button>
+        <button type="button" id="analyzeAnotherBtn">Analyze Another Leaf</button>
+      </div>
+    </div>
+
+    <!-- Presets -->
+    <div id="samplePresetsGrid"></div>
+
+    <!-- Modals -->
+    <div id="reportLangModal" class="modal-backdrop">
+      <input type="text" id="reportLangSearch" />
+      <div id="reportLangList"></div>
+      <button id="confirmDownloadReportBtn">Generate PDF Report</button>
+      <button id="cancelReportModalBtn">Cancel</button>
+      <button id="closeReportModalBtn">Close</button>
+    </div>
+  </div>
+
+  <script src="js/i18n.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/report.js"></script>
+  <script src="js/analyzer.js"></script>
+
+  <script>
+    window.__TEST_RESULTS__ = {
+      passed: 0,
+      failed: 0,
+      total: 14,
+      details: []
+    };
+
+    function recordTest(id, name, expected, observed, passed) {
+      if (passed) {
+        window.__TEST_RESULTS__.passed++;
+      } else {
+        window.__TEST_RESULTS__.failed++;
+      }
+      window.__TEST_RESULTS__.details.push({ id, name, expected, observed, passed });
+
+      const tbody = document.getElementById("resultsBody");
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td><strong>${id}</strong></td>
+        <td>${name}</td>
+        <td><code>${expected}</code></td>
+        <td><code>${observed}</code></td>
+        <td><span class="status-badge ${passed ? 'status-pass' : 'status-fail'}">${passed ? 'PASS' : 'FAIL'}</span></td>
+      `;
+      tbody.appendChild(tr);
+
+      document.getElementById("summaryPassed").textContent = `Passed: ${window.__TEST_RESULTS__.passed}`;
+      document.getElementById("summaryFailed").textContent = `Failed: ${window.__TEST_RESULTS__.failed}`;
+    }
+
+    // Intercept window.alert for test assertions
+    let lastAlertMsg = null;
+    window.alert = function(msg) {
+      lastAlertMsg = msg;
+    };
+
+    async function runTestSuite() {
+      const analyzer = window.paudhAnalyzer;
+      const reportGen = window.PaudhCareReportGenerator;
+
+      // -------------------------------------------------------------
+      // SCENARIO 1: Non-Tomato Crop (Chilli / Mirch) with Leaf Curl
+      // -------------------------------------------------------------
+      try {
+        const chilliAiResult = {
+          isPlant: true,
+          canAnalyze: true,
+          imageQuality: "good",
+          validationState: "VALID_PLANT",
+          plant: { commonName: "Chilli", scientificName: "Capsicum annuum" },
+          diagnosis: { name: "Chilli Leaf Curl Virus", type: "disease", confidence: 91, certainty: "high" },
+          observations: ["Severe leaf curling, puckering, and upward cupping"],
+          symptoms: ["Upward curling of leaves", "Reduced leaf size", "Stunted terminal growth"],
+          possibleCauses: ["Whitefly (Bemisia tabaci) vector transmission", "High ambient temperatures"],
+          severity: "High Priority Attention",
+          recommendedActions: ["Uproot severely infected plants", "Control whitefly vectors using yellow sticky traps"],
+          treatment: { immediate: "Isolate infected seedlings", chemical: "Consult extension for registered vector control" }
+        };
+
+        analyzer.activeCase = analyzer.mapAiResultToCase(chilliAiResult);
+        analyzer.activeCaseConfidence = chilliAiResult.diagnosis.confidence;
+        analyzer.completeAnalysis();
+
+        const plantName = document.getElementById("resultPlantName").textContent;
+        const condition = document.getElementById("resultCondition").textContent;
+        const invalidCardVisible = document.getElementById("invalidImageNoticeCard").style.display !== "none";
+        const validContentVisible = document.getElementById("validDiagnosisContent").style.display !== "none";
+
+        const passed = plantName.includes("Chilli") && !plantName.includes("Tomato") &&
+                       condition.includes("Chilli Leaf Curl") && !condition.includes("Late Blight") &&
+                       !invalidCardVisible && validContentVisible;
+
+        recordTest(1, "Non-Tomato Crop: Chilli Leaf Curl", "Plant: Chilli, Condition: Chilli Leaf Curl, Valid Content Shown", `${plantName}, ${condition}`, passed);
+      } catch (e) {
+        recordTest(1, "Non-Tomato Crop: Chilli Leaf Curl", "Success", e.message, false);
+      }
+
+      // -------------------------------------------------------------
+      // SCENARIO 2: Non-Tomato Crop (Potato Early Blight)
+      // -------------------------------------------------------------
+      try {
+        const potatoAiResult = {
+          isPlant: true,
+          canAnalyze: true,
+          imageQuality: "good",
+          validationState: "VALID_PLANT",
+          plant: { commonName: "Potato", scientificName: "Solanum tuberosum" },
+          diagnosis: { name: "Potato Early Blight", type: "disease", confidence: 88, certainty: "high" },
+          observations: ["Concentric rings forming target spots on lower foliage"],
+          severity: "Moderate Priority Attention",
+          recommendedActions: ["Maintain fungicide coverage", "Improve crop spacing"],
+          treatment: { immediate: "Remove infected lower leaves", chemical: "Apply labeled protectant fungicide" }
+        };
+
+        analyzer.activeCase = analyzer.mapAiResultToCase(potatoAiResult);
+        analyzer.activeCaseConfidence = potatoAiResult.diagnosis.confidence;
+        analyzer.completeAnalysis();
+
+        const plantName = document.getElementById("resultPlantName").textContent;
+        const condition = document.getElementById("resultCondition").textContent;
+
+        const passed = plantName.includes("Potato") && !plantName.includes("Tomato") &&
+                       condition.includes("Early Blight") && !condition.includes("Tomato");
+
+        recordTest(2, "Non-Tomato Crop: Potato Early Blight", "Plant: Potato, Not Tomato", `${plantName}, ${condition}`, passed);
+      } catch (e) {
+        recordTest(2, "Non-Tomato Crop: Potato Early Blight", "Success", e.message, false);
+      }
+
+      // -------------------------------------------------------------
+      // SCENARIO 3: Non-Tomato Crop (Rice Bacterial Leaf Blight)
+      // -------------------------------------------------------------
+      try {
+        const riceAiResult = {
+          isPlant: true,
+          canAnalyze: true,
+          imageQuality: "good",
+          validationState: "VALID_PLANT",
+          plant: { commonName: "Rice (Paddy)", scientificName: "Oryza sativa" },
+          diagnosis: { name: "Bacterial Leaf Blight (Xanthomonas oryzae)", type: "disease", confidence: 94, certainty: "high" },
+          observations: ["Water-soaked lesions on leaf margins enlarging into yellow-white stripes"],
+          severity: "High Priority Attention"
+        };
+
+        analyzer.activeCase = analyzer.mapAiResultToCase(riceAiResult);
+        analyzer.activeCaseConfidence = riceAiResult.diagnosis.confidence;
+        analyzer.completeAnalysis();
+
+        const plantName = document.getElementById("resultPlantName").textContent;
+        const condition = document.getElementById("resultCondition").textContent;
+
+        const passed = plantName.includes("Rice") && !plantName.includes("Tomato") &&
+                       condition.includes("Bacterial Leaf Blight");
+
+        recordTest(3, "Non-Tomato Crop: Rice Bacterial Leaf Blight", "Plant: Rice, Not Tomato", `${plantName}, ${condition}`, passed);
+      } catch (e) {
+        recordTest(3, "Non-Tomato Crop: Rice Bacterial Leaf Blight", "Success", e.message, false);
+      }
+
+      // -------------------------------------------------------------
+      // SCENARIO 4: Healthy Plant Specimen
+      // -------------------------------------------------------------
+      try {
+        const healthyAiResult = {
+          isPlant: true,
+          canAnalyze: true,
+          imageQuality: "good",
+          validationState: "VALID_PLANT",
+          plant: { commonName: "Maize (Corn)", scientificName: "Zea mays" },
+          diagnosis: { name: "No obvious disease detected (Healthy Foliage)", type: "healthy", confidence: 96, certainty: "high" },
+          observations: ["Uniform green pigmentation across leaf blade, no lesions observed"],
+          severity: "Healthy — Normal Care"
+        };
+
+        analyzer.activeCase = analyzer.mapAiResultToCase(healthyAiResult);
+        analyzer.activeCaseConfidence = healthyAiResult.diagnosis.confidence;
+        analyzer.completeAnalysis();
+
+        const condition = document.getElementById("resultCondition").textContent;
+        const isHealthyBadge = document.getElementById("resultSeverityBadge").classList.contains("pill-badge-green");
+
+        const passed = condition.includes("Healthy") && isHealthyBadge;
+
+        recordTest(4, "Healthy Plant Specimen", "Healthy diagnosis, Green badge", condition, passed);
+      } catch (e) {
+        recordTest(4, "Healthy Plant Specimen", "Success", e.message, false);
+      }
+
+      // -------------------------------------------------------------
+      // SCENARIO 5: Genuine Tomato Plant (Tomato supported normally, not favored)
+      // -------------------------------------------------------------
+      try {
+        const tomatoAiResult = {
+          isPlant: true,
+          canAnalyze: true,
+          imageQuality: "good",
+          validationState: "VALID_PLANT",
+          plant: { commonName: "Tomato", scientificName: "Solanum lycopersicum" },
+          diagnosis: { name: "Possible Tomato Late Blight", type: "disease", confidence: 85, certainty: "medium" },
+          observations: ["Water-soaked dark lesions on leaf tips"],
+          severity: "High Priority Attention"
+        };
+
+        analyzer.activeCase = analyzer.mapAiResultToCase(tomatoAiResult);
+        analyzer.activeCaseConfidence = 85;
+        analyzer.completeAnalysis();
+
+        const plantName = document.getElementById("resultPlantName").textContent;
+        const condition = document.getElementById("resultCondition").textContent;
+
+        const passed = plantName.includes("Tomato") && condition.includes("Late Blight");
+
+        recordTest(5, "Genuine Tomato Specimen", "Tomato identified when actually tomato", `${plantName}, ${condition}`, passed);
+      } catch (e) {
+        recordTest(5, "Genuine Tomato Specimen", "Success", e.message, false);
+      }
+
+      // -------------------------------------------------------------
+      // SCENARIO 6: Non-Plant Image (Human Portrait / Selfie)
+      // -------------------------------------------------------------
+      try {
+        const selfieAiResult = {
+          isPlant: false,
+          canAnalyze: false,
+          imageQuality: "good",
+          validationState: "NOT_A_PLANT",
+          rejectionReason: "The uploaded image appears to be a portrait of a person (human face/selfie), not an agricultural plant or leaf.",
+          userGuidance: "Please photograph a crop leaf from 15-30 cm distance in clear daylight.",
+          plant: { commonName: "Non-Plant Subject", scientificName: "" },
+          diagnosis: { name: "Analysis Unavailable — Non-Plant Subject", type: "uncertain", confidence: null }
+        };
+
+        analyzer.activeCase = analyzer.mapAiResultToCase(selfieAiResult);
+        analyzer.completeAnalysis();
+
+        const invalidCard = document.getElementById("invalidImageNoticeCard");
+        const validContent = document.getElementById("validDiagnosisContent");
+        const reasonText = document.getElementById("invalidReasonText").textContent;
+        const condition = document.getElementById("resultCondition").textContent;
+
+        const passed = invalidCard.style.display !== "none" &&
+                       validContent.style.display === "none" &&
+                       reasonText.includes("person") &&
+                       !condition.includes("Tomato") &&
+                       !condition.includes("Late Blight");
+
+        recordTest(6, "Non-Plant: Human Portrait / Selfie", "Invalid Card Shown, Diagnosis Hidden, No Tomato", `Notice: ${invalidCard.style.display}, Diagnosis: ${validContent.style.display}`, passed);
+      } catch (e) {
+        recordTest(6, "Non-Plant: Human Portrait / Selfie", "Success", e.message, false);
+      }
+
+      // -------------------------------------------------------------
+      // SCENARIO 7: Non-Plant Image (Animal / Cat / Dog)
+      // -------------------------------------------------------------
+      try {
+        const catAiResult = {
+          isPlant: false,
+          canAnalyze: false,
+          imageQuality: "good",
+          validationState: "NOT_A_PLANT",
+          rejectionReason: "The photo depicts a domestic animal (cat/dog), not a plant or leaf specimen.",
+          plant: { commonName: "Non-Plant Subject", scientificName: "" },
+          diagnosis: { name: "Analysis Unavailable — Non-Plant Subject", type: "uncertain", confidence: null }
+        };
+
+        analyzer.activeCase = analyzer.mapAiResultToCase(catAiResult);
+        analyzer.completeAnalysis();
+
+        const invalidCard = document.getElementById("invalidImageNoticeCard");
+        const validContent = document.getElementById("validDiagnosisContent");
+        const reasonText = document.getElementById("invalidReasonText").textContent;
+
+        const passed = invalidCard.style.display !== "none" &&
+                       validContent.style.display === "none" &&
+                       reasonText.includes("animal");
+
+        recordTest(7, "Non-Plant: Animal (Cat / Dog)", "Invalid Card Shown, No Tomato Diagnosis", `Reason: ${reasonText.substring(0, 35)}...`, passed);
+      } catch (e) {
+        recordTest(7, "Non-Plant: Animal (Cat / Dog)", "Success", e.message, false);
+      }
+
+      // -------------------------------------------------------------
+      // SCENARIO 8: Non-Plant Image (Car / Vehicle / Random Object)
+      // -------------------------------------------------------------
+      try {
+        const carAiResult = {
+          isPlant: false,
+          canAnalyze: false,
+          imageQuality: "good",
+          validationState: "NOT_A_PLANT",
+          rejectionReason: "The uploaded image depicts a motor vehicle, not an agricultural crop or plant.",
+          plant: { commonName: "Non-Plant Subject", scientificName: "" },
+          diagnosis: { name: "Analysis Unavailable — Non-Plant Subject", type: "uncertain", confidence: null }
+        };
+
+        analyzer.activeCase = analyzer.mapAiResultToCase(carAiResult);
+        analyzer.completeAnalysis();
+
+        const invalidCard = document.getElementById("invalidImageNoticeCard");
+        const validContent = document.getElementById("validDiagnosisContent");
+
+        const passed = invalidCard.style.display !== "none" && validContent.style.display === "none";
+
+        recordTest(8, "Non-Plant: Vehicle / Random Object", "Invalid Card Shown, Valid Content Hidden", `Card: ${invalidCard.style.display}`, passed);
+      } catch (e) {
+        recordTest(8, "Non-Plant: Vehicle / Random Object", "Success", e.message, false);
+      }
+
+      // -------------------------------------------------------------
+      // SCENARIO 9: Blurry / Low-Quality Plant Image
+      // -------------------------------------------------------------
+      try {
+        const blurryAiResult = {
+          isPlant: true,
+          canAnalyze: false,
+          imageQuality: "blurry",
+          validationState: "LOW_QUALITY",
+          rejectionReason: "The uploaded leaf image is severely out of focus and blurry. Foliar lesions cannot be reliably distinguished.",
+          userGuidance: "Please hold the camera steady in daylight and focus on the leaf.",
+          plant: { commonName: "Foliar Specimen (Unclear)", scientificName: "" },
+          diagnosis: { name: "Analysis Inconclusive — Low Quality Image", type: "uncertain", confidence: null }
+        };
+
+        analyzer.activeCase = analyzer.mapAiResultToCase(blurryAiResult);
+        analyzer.completeAnalysis();
+
+        const invalidCard = document.getElementById("invalidImageNoticeCard");
+        const validContent = document.getElementById("validDiagnosisContent");
+        const titleText = document.getElementById("invalidNoticeTitle").textContent;
+
+        const passed = invalidCard.style.display !== "none" &&
+                       validContent.style.display === "none" &&
+                       titleText.includes("Low Quality");
+
+        recordTest(9, "Blurry / Low Quality Plant Photo", "Invalid Card with Low Quality title", titleText, passed);
+      } catch (e) {
+        recordTest(9, "Blurry / Low Quality Plant Photo", "Success", e.message, false);
+      }
+
+      // -------------------------------------------------------------
+      // SCENARIO 10: Report Download Gating on Invalid Image
+      // -------------------------------------------------------------
+      try {
+        lastAlertMsg = null;
+        const reportBtn = document.getElementById("openReportModalBtn");
+        const isLockedClass = reportBtn.classList.contains("btn-locked");
+        const hasAriaDisabled = reportBtn.getAttribute("aria-disabled") === "true";
+
+        // Simulate user clicking Download Report while active case is invalid
+        reportBtn.click();
+
+        const alertShown = lastAlertMsg && lastAlertMsg.includes("Report unavailable") &&
+                           lastAlertMsg.includes("Please upload a clear image of a plant or leaf");
+
+        const modalOpen = document.getElementById("reportLangModal").classList.contains("open");
+
+        const passed = isLockedClass && hasAriaDisabled && alertShown && !modalOpen;
+
+        recordTest(10, "Report Download Gating on Invalid Specimen", "btn-locked, alerts user, blocks modal", `Alert: ${lastAlertMsg ? 'Yes' : 'No'}, ModalOpen: ${modalOpen}`, passed);
+      } catch (e) {
+        recordTest(10, "Report Download Gating on Invalid Specimen", "Success", e.message, false);
+      }
+
+      // -------------------------------------------------------------
+      // SCENARIO 11: Missing API Key in Backend (.env) Error Handling
+      // -------------------------------------------------------------
+      try {
+        // Mock server returning MISSING_KEY response
+        window.fetch = async function(url) {
+          if (url.includes("/api/analyze")) {
+            return {
+              ok: true,
+              json: async () => ({
+                success: false,
+                errorType: "MISSING_KEY",
+                message: "AI analysis is not configured yet. Please configure GEMINI_API_KEY in the .env file."
+              })
+            };
+          }
+          return { ok: false };
+        };
+
+        analyzer.currentImage = "data:image/jpeg;base64,/9j/fakeImageData";
+        analyzer.isUploadedByUser = true;
+        analyzer.activeCase = null;
+
+        await analyzer.runAnalysis();
+
+        const errText = document.getElementById("analyzerErrorText").textContent;
+        const activeCaseIsNull = analyzer.activeCase === null;
+
+        const passed = errText.includes("configure GEMINI_API_KEY") && activeCaseIsNull;
+
+        recordTest(11, "Missing API Key (.env) Handling", "Explicit error shown, ZERO Tomato fallback", `Error: ${errText.substring(0, 40)}..., Case: ${analyzer.activeCase}`, passed);
+      } catch (e) {
+        recordTest(11, "Missing API Key (.env) Handling", "Success", e.message, false);
+      }
+
+      // -------------------------------------------------------------
+      // SCENARIO 12: Rate Limit (429) Handling
+      // -------------------------------------------------------------
+      try {
+        window.fetch = async function(url) {
+          if (url.includes("/api/analyze")) {
+            return {
+              ok: true,
+              json: async () => ({
+                success: false,
+                errorType: "RATE_LIMIT",
+                message: "AI analysis limit reached. Please try again later."
+              })
+            };
+          }
+          return { ok: false };
+        };
+
+        analyzer.currentImage = "data:image/jpeg;base64,/9j/fakeImageData";
+        analyzer.isUploadedByUser = true;
+        analyzer.activeCase = null;
+
+        await analyzer.runAnalysis();
+
+        const errText = document.getElementById("analyzerErrorText").textContent;
+        const passed = errText.includes("limit reached") && analyzer.activeCase === null;
+
+        recordTest(12, "Rate Limit (429) Handling", "Rate limit error shown, ZERO Tomato fallback", errText, passed);
+      } catch (e) {
+        recordTest(12, "Rate Limit (429) Handling", "Success", e.message, false);
+      }
+
+      // -------------------------------------------------------------
+      // SCENARIO 13: Confidence Score Integrity (Real vs Unavailable, No Math.random)
+      // -------------------------------------------------------------
+      try {
+        // Case A: Model returns real confidence = 89
+        const validWithConf = {
+          isPlant: true, canAnalyze: true, validationState: "VALID_PLANT",
+          plant: { commonName: "Wheat", scientificName: "Triticum aestivum" },
+          diagnosis: { name: "Wheat Yellow Rust", confidence: 89 }
+        };
+        analyzer.activeCase = analyzer.mapAiResultToCase(validWithConf);
+        analyzer.activeCaseConfidence = 89;
+        analyzer.completeAnalysis();
+        const confTextA = document.getElementById("resultConfidence").textContent;
+
+        // Case B: Model returns null confidence
+        const validNoConf = {
+          isPlant: true, canAnalyze: true, validationState: "VALID_PLANT",
+          plant: { commonName: "Wheat", scientificName: "Triticum aestivum" },
+          diagnosis: { name: "Wheat Yellow Rust", confidence: null }
+        };
+        analyzer.activeCase = analyzer.mapAiResultToCase(validNoConf);
+        analyzer.activeCaseConfidence = null;
+        analyzer.completeAnalysis();
+        const confTextB = document.getElementById("resultConfidence").textContent;
+
+        const passed = confTextA.includes("89%") && confTextB.includes("Not available");
+
+        recordTest(13, "Confidence Score Integrity", "Real 89% when numeric, 'Not available' when null", `Case A: ${confTextA}, Case B: ${confTextB}`, passed);
+      } catch (e) {
+        recordTest(13, "Confidence Score Integrity", "Success", e.message, false);
+      }
+
+      // -------------------------------------------------------------
+      // SCENARIO 14: Multilingual Language Propagation to API Request
+      // -------------------------------------------------------------
+      try {
+        let capturedPayload = null;
+        window.fetch = async function(url, options) {
+          if (options && options.body) {
+            capturedPayload = JSON.parse(options.body);
+          }
+          return {
+            ok: true,
+            json: async () => ({
+              success: true,
+              result: {
+                isPlant: true,
+                canAnalyze: true,
+                validationState: "VALID_PLANT",
+                plant: { commonName: "बैंगन (Brinjal)", scientificName: "Solanum melongena" },
+                diagnosis: { name: "बैंगन का छोटी पत्ती रोग (Little Leaf of Brinjal)", confidence: 92 }
+              }
+            })
+          };
+        };
+
+        const i18n = window.PaudhCareI18n;
+        if (i18n) i18n.setLanguage("hi");
+
+        analyzer.currentImage = "data:image/jpeg;base64,/9j/fakeImageData";
+        analyzer.isUploadedByUser = true;
+        await analyzer.runAnalysis();
+
+        const langSent = capturedPayload ? capturedPayload.language : null;
+        const plantRendered = document.getElementById("resultPlantName").textContent;
+
+        const passed = langSent === "hi" && plantRendered.includes("बैंगन");
+
+        recordTest(14, "Multilingual Language Propagation", "language: 'hi' sent to API, Hindi output rendered", `Lang sent: ${langSent}, Plant: ${plantRendered}`, passed);
+      } catch (e) {
+        recordTest(14, "Multilingual Language Propagation", "Success", e.message, false);
+      }
+
+      window.__TESTS_COMPLETED__ = true;
+      console.log("=== ALL 14 SCENARIOS FINISHED ===", window.__TEST_RESULTS__);
+    }
+
+    window.addEventListener("DOMContentLoaded", runTestSuite);
+  </script>
+</body>
+</html>

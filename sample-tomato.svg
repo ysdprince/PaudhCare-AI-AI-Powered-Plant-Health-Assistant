@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 450" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgTomato" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1c1917" />
+      <stop offset="100%" stop-color="#0f172a" />
+    </linearGradient>
+    <linearGradient id="tomatoLeafGrad" x1="0%" y1="0%" x2="80%" y2="100%">
+      <stop offset="0%" stop-color="#2d6a4f" />
+      <stop offset="50%" stop-color="#40916c" />
+      <stop offset="100%" stop-color="#1b4332" />
+    </linearGradient>
+    <radialGradient id="blightSpot1" cx="45%" cy="45%" r="50%">
+      <stop offset="0%" stop-color="#3b1f14" />
+      <stop offset="60%" stop-color="#542e1f" />
+      <stop offset="90%" stop-color="#854d0e" />
+      <stop offset="100%" stop-color="rgba(133, 77, 14, 0)" />
+    </radialGradient>
+    <radialGradient id="blightSpot2" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#26120c" />
+      <stop offset="70%" stop-color="#451a03" />
+      <stop offset="95%" stop-color="#78350f" />
+      <stop offset="100%" stop-color="rgba(120, 53, 15, 0)" />
+    </radialGradient>
+  </defs>
+
+  <rect width="600" height="450" fill="url(#bgTomato)" rx="16" />
+
+  <!-- Grid overlay -->
+  <g stroke="rgba(255,255,255,0.04)" stroke-width="1">
+    <line x1="150" y1="0" x2="150" y2="450" />
+    <line x1="300" y1="0" x2="300" y2="450" />
+    <line x1="450" y1="0" x2="450" y2="450" />
+    <line x1="0" y1="150" x2="600" y2="150" />
+    <line x1="0" y1="300" x2="600" y2="300" />
+  </g>
+
+  <!-- Tomato Compound Leaf -->
+  <g transform="translate(300, 240) rotate(-15)">
+    <!-- Main stem -->
+    <path d="M-10,180 Q0,40 10,-150" stroke="#52796f" stroke-width="8" stroke-linecap="round" fill="none" />
+
+    <!-- Terminal Leaflet -->
+    <path d="M10,-150 C40,-190 20,-240 10,-260 C0,-240 -20,-190 10,-150 Z" fill="url(#tomatoLeafGrad)" stroke="#74c69d" stroke-width="1.5" />
+
+    <!-- Right upper leaflet -->
+    <path d="M15,-80 C80,-110 130,-110 140,-80 C110,-40 60,-50 15,-80 Z" fill="url(#tomatoLeafGrad)" stroke="#74c69d" stroke-width="1.5" />
+
+    <!-- Left upper leaflet -->
+    <path d="M5,-90 C-60,-120 -110,-120 -120,-90 C-90,-50 -40,-60 5,-90 Z" fill="url(#tomatoLeafGrad)" stroke="#74c69d" stroke-width="1.5" />
+
+    <!-- Right main leaflet (Showing Late Blight Lesions) -->
+    <path d="M5,10 C90,-20 160,0 170,40 C140,90 70,60 5,10 Z" fill="url(#tomatoLeafGrad)" stroke="#74c69d" stroke-width="1.5" />
+    <!-- Blight necrotic spots -->
+    <ellipse cx="90" cy="20" rx="35" ry="24" fill="url(#blightSpot1)" />
+    <ellipse cx="125" cy="35" rx="26" ry="18" fill="url(#blightSpot2)" />
+    <!-- Delicate white mold fringe -->
+    <circle cx="85" cy="18" r="28" stroke="rgba(241, 245, 249, 0.45)" stroke-width="2" stroke-dasharray="3,3" fill="none" />
+
+    <!-- Left main leaflet (Showing Late Blight Lesions) -->
+    <path d="M-5,20 C-90,-10 -160,10 -170,50 C-140,100 -70,70 -5,20 Z" fill="url(#tomatoLeafGrad)" stroke="#74c69d" stroke-width="1.5" />
+    <ellipse cx="-85" cy="35" rx="30" ry="22" fill="url(#blightSpot1)" />
+    <ellipse cx="-120" cy="45" rx="22" ry="16" fill="url(#blightSpot2)" />
+  </g>
+
+  <!-- Diagnostic Overlay -->
+  <g transform="translate(370, 210)">
+    <rect width="180" height="60" rx="10" fill="rgba(15, 23, 42, 0.85)" stroke="#ef4444" stroke-width="1.5" />
+    <circle cx="20" cy="30" r="6" fill="#ef4444" />
+    <text x="36" y="26" fill="#fecaca" font-family="Inter, sans-serif" font-size="11" font-weight="700">LATE BLIGHT DETECTED</text>
+    <text x="36" y="44" fill="#94a3b8" font-family="Inter, sans-serif" font-size="10">Phytophthora infestans</text>
+  </g>
+
+  <g transform="translate(24, 24)">
+    <rect width="150" height="32" rx="16" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.2)" stroke-width="1" />
+    <text x="75" y="20" fill="#ffffff" font-family="Inter, sans-serif" font-size="11" font-weight="600" text-anchor="middle">DEMO SAMPLE #1</text>
+  </g>
+</svg>

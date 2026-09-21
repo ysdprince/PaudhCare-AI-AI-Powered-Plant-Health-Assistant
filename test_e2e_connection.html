@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>PaudhCare AI — End-to-End Frontend to Backend Verification</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      padding: 24px;
+      background: #f8fafc;
+    }
+    .header-box {
+      background: #14452f;
+      color: white;
+      padding: 20px 24px;
+      border-radius: 12px;
+      margin-bottom: 24px;
+    }
+    .status-card {
+      background: white;
+      padding: 16px 20px;
+      border-radius: 8px;
+      margin-bottom: 12px;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+    .status-pass { border-left: 5px solid #16a34a; }
+    .status-fail { border-left: 5px solid #dc2626; }
+    .badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      font-weight: 700;
+      font-size: 0.75rem;
+    }
+    .badge-success { background: #dcfce7; color: #166534; }
+    .badge-error { background: #fee2e2; color: #991b1b; }
+  </style>
+</head>
+<body>
+  <div class="header-box">
+    <h1 style="margin:0; font-size: 1.5rem;">PaudhCare AI — End-to-End Connection Verification</h1>
+    <p style="margin: 6px 0 0 0; opacity: 0.9;">Verifying Frontend → Backend (Port 8000) → Plant Analysis API → Response → Frontend Display</p>
+  </div>
+
+  <div id="testLog"></div>
+
+  <!-- Real Analyzer Component Setup -->
+  <div id="dropzoneCard" class="dropzone-card" style="display:none;">
+    <input type="file" id="leafFileInput" style="display:none;" />
+    <div id="analyzerErrorAlert" style="display:none;" class="error-alert">
+      <span id="analyzerErrorText"></span>
+    </div>
+  </div>
+  <div id="previewContainer" style="display:none;">
+    <img id="previewImage" src="" />
+    <span id="previewBadge"></span>
+    <div id="scanLine"></div>
+    <button id="removeImageBtn">Remove</button>
+  </div>
+  <div id="analyzerActionsBar" style="display:none;">
+    <button id="analyzePlantBtn">Analyze Plant</button>
+  </div>
+  <div id="loadingDiagnosticBox" style="display:none;">
+    <div id="loadingTicker"></div>
+  </div>
+  <div id="resultDashboard" style="display:none;">
+    <div class="result-header-card">
+      <div id="resultPlantName"></div>
+      <div id="resultCondition"></div>
+      <div id="resultSeverityBadge"></div>
+      <div id="resultConfidence"></div>
+    </div>
+    <div id="invalidImageNoticeCard" style="display:none;">
+      <div id="invalidNoticeTitle"></div>
+      <div id="invalidNoticeSubtitle"></div>
+      <div id="invalidReasonText"></div>
+    </div>
+    <div id="validDiagnosisContent"></div>
+    <button id="openReportModalBtn">Download Report</button>
+    <button id="analyzeAnotherBtn">Analyze Another</button>
+  </div>
+  <div id="samplePresetsGrid" style="display:none;"></div>
+
+  <script src="js/i18n.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/report.js"></script>
+  <script src="js/analyzer.js"></script>
+
+  <script>
+    window.__E2E_RESULTS__ = [];
+
+    function addLog(title, expected, observed, passed) {
+      window.__E2E_RESULTS__.push({ title, expected, observed, passed });
+      const container = document.getElementById("testLog");
+      const card = document.createElement("div");
+      card.className = "status-card " + (passed ? "status-pass" : "status-fail");
+      card.innerHTML = `
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <strong style="font-size:1rem; color:#0f172a;">${title}</strong>
+          <span class="badge ${passed ? 'badge-success' : 'badge-error'}">${passed ? 'PASS' : 'FAIL'}</span>
+        </div>
+        <div style="margin-top:8px; font-size:0.875rem; color:#475569;">
+          <div><strong>Expected:</strong> <code>${expected}</code></div>
+          <div><strong>Observed:</strong> <code>${observed}</code></div>
+        </div>
+      `;
+      container.appendChild(card);
+    }
+
+    async function runE2eCheck() {
+      const analyzer = window.paudhAnalyzer;
+
+      // 1. Check Health Endpoint
+      try {
+        const health = await analyzer.checkBackendConnection();
+        const passed = health && health.status === "ok" && health.service.includes("PaudhCare AI");
+        addLog(
+          "Backend Health Check (/api/health)",
+          "status: ok, service: PaudhCare AI...",
+          health ? `status: ${health.status}, geminiConfigured: ${health.geminiConfigured}` : "Failed to connect",
+          passed
+        );
+      } catch (e) {
+        addLog("Backend Health Check (/api/health)", "status: ok", e.message, false);
+      }
+
+      // 2. Test Real Analyze Flow with missing key (Live Server on port 8000)
+      try {
+        const sampleBase64 = "data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==";
+        analyzer.setImageDataUrl(sampleBase64);
+
+        // Clear any previous errors
+        analyzer.clearError();
+
+        // Trigger real analysis
+        await analyzer.runAnalysis();
+
+        // Verify that analyzerErrorAlert displayed the clear configuration message
+        const errAlert = document.getElementById("analyzerErrorAlert");
+        const errText = document.getElementById("analyzerErrorText").textContent;
+
+        const isVisible = errAlert.style.display === "flex";
+        const hasCorrectMsg = errText.includes("AI analysis is not configured yet") &&
+                              errText.includes("GEMINI_API_KEY");
+        const notOfflineMsg = !errText.includes("Plant analysis server is offline");
+
+        const passed = isVisible && hasCorrectMsg && notOfflineMsg;
+
+        addLog(
+          "Real Analyze Request Handling (Frontend → Backend → Response)",
+          "Explicit GEMINI_API_KEY notice shown; NOT 'server is offline'",
+          `Alert Visible: ${isVisible}, Message: "${errText}"`,
+          passed
+        );
+      } catch (e) {
+        addLog("Real Analyze Request Handling", "Success", e.message, false);
+      }
+
+      // 3. Verify Candidate Endpoint Resolution
+      try {
+        const endpoints = analyzer.getApiEndpoints();
+        const hasRelative = endpoints.includes("/api/analyze-plant");
+        const hasDirect = endpoints.some(u => u.includes("http://localhost:8000/api/analyze-plant") || u.includes("http://127.0.0.1:8000/api/analyze-plant"));
+        const passed = hasRelative || hasDirect;
+        addLog(
+          "Resilient API Endpoint Candidate Resolution",
+          "Includes relative and localhost:8000 fallbacks",
+          endpoints.join(", "),
+          passed
+        );
+      } catch (e) {
+        addLog("Resilient API Endpoint Candidate Resolution", "Success", e.message, false);
+      }
+
+      window.__E2E_COMPLETED__ = true;
+    }
+
+    window.addEventListener("DOMContentLoaded", () => {
+      setTimeout(runE2eCheck, 500);
+    });
+  </script>
+</body>
+</html>

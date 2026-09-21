@@ -1,0 +1,108 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="100%" height="100%">
+  <defs>
+    <linearGradient id="leafGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1b4332" />
+      <stop offset="40%" stop-color="#2d6a4f" />
+      <stop offset="70%" stop-color="#40916c" />
+      <stop offset="100%" stop-color="#52b788" />
+    </linearGradient>
+    <linearGradient id="scanGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="rgba(74, 222, 128, 0)" />
+      <stop offset="50%" stop-color="rgba(74, 222, 128, 0.85)" />
+      <stop offset="100%" stop-color="rgba(74, 222, 128, 0)" />
+    </linearGradient>
+    <radialGradient id="glowGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="rgba(52, 211, 153, 0.25)" />
+      <stop offset="100%" stop-color="rgba(52, 211, 153, 0)" />
+    </radialGradient>
+    <filter id="shadowFilter" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="16" stdDeviation="24" flood-color="#081c15" flood-opacity="0.4" />
+    </filter>
+  </defs>
+
+  <!-- Ambient Glow Background -->
+  <rect width="800" height="600" fill="#081c15" rx="24" />
+  <circle cx="400" cy="300" r="280" fill="url(#glowGlow)" />
+
+  <!-- Abstract Tech Grid Lines -->
+  <g stroke="rgba(255,255,255,0.05)" stroke-width="1">
+    <line x1="100" y1="0" x2="100" y2="600" />
+    <line x1="200" y1="0" x2="200" y2="600" />
+    <line x1="300" y1="0" x2="300" y2="600" />
+    <line x1="400" y1="0" x2="400" y2="600" />
+    <line x1="500" y1="0" x2="500" y2="600" />
+    <line x1="600" y1="0" x2="600" y2="600" />
+    <line x1="700" y1="0" x2="700" y2="600" />
+    <line x1="0" y1="100" x2="800" y2="100" />
+    <line x1="0" y1="200" x2="800" y2="200" />
+    <line x1="0" y1="300" x2="800" y2="300" />
+    <line x1="0" y1="400" x2="800" y2="400" />
+    <line x1="0" y1="500" x2="800" y2="500" />
+  </g>
+
+  <!-- Botanical Leaf Structure -->
+  <g filter="url(#shadowFilter)">
+    <!-- Main Leaf Body -->
+    <path d="M400,80 C540,140 620,320 540,460 C460,540 420,530 400,530 C380,530 340,540 260,460 C180,320 260,140 400,80 Z" fill="url(#leafGrad)" />
+
+    <!-- Stem & Primary Vein -->
+    <path d="M400,560 Q400,320 400,90" stroke="#74c69d" stroke-width="6" stroke-linecap="round" fill="none" />
+
+    <!-- Lateral Veins -->
+    <path d="M400,430 Q470,390 520,410" stroke="#95d5b2" stroke-width="3" fill="none" opacity="0.8" />
+    <path d="M400,430 Q330,390 280,410" stroke="#95d5b2" stroke-width="3" fill="none" opacity="0.8" />
+    <path d="M400,350 Q490,300 545,310" stroke="#95d5b2" stroke-width="3" fill="none" opacity="0.8" />
+    <path d="M400,350 Q310,300 255,310" stroke="#95d5b2" stroke-width="3" fill="none" opacity="0.8" />
+    <path d="M400,270 Q490,220 525,210" stroke="#95d5b2" stroke-width="3" fill="none" opacity="0.8" />
+    <path d="M400,270 Q310,220 275,210" stroke="#95d5b2" stroke-width="3" fill="none" opacity="0.8" />
+    <path d="M400,190 Q470,140 480,125" stroke="#95d5b2" stroke-width="2.5" fill="none" opacity="0.8" />
+    <path d="M400,190 Q330,140 320,125" stroke="#95d5b2" stroke-width="2.5" fill="none" opacity="0.8" />
+  </g>
+
+  <!-- AI Computer Vision Recognition Bounding Box & Target Overlays -->
+  <g>
+    <!-- Targeting Crosshair 1 (Chlorophyll density) -->
+    <circle cx="340" cy="280" r="32" stroke="#34d399" stroke-width="2" stroke-dasharray="6,4" fill="rgba(52, 211, 153, 0.1)" />
+    <circle cx="340" cy="280" r="3" fill="#34d399" />
+    <line x1="340" y1="240" x2="340" y2="244" stroke="#34d399" stroke-width="2" />
+    <line x1="340" y1="316" x2="340" y2="320" stroke="#34d399" stroke-width="2" />
+    <line x1="300" y1="280" x2="304" y2="280" stroke="#34d399" stroke-width="2" />
+    <line x1="376" y1="280" x2="380" y2="280" stroke="#34d399" stroke-width="2" />
+    <rect x="290" y="222" width="100" height="18" rx="4" fill="rgba(6, 78, 59, 0.85)" stroke="#34d399" stroke-width="1" />
+    <text x="340" y="235" fill="#a7f3d0" font-family="Inter, sans-serif" font-size="10" font-weight="600" text-anchor="middle">CELL TISSUE: 98%</text>
+
+    <!-- Targeting Crosshair 2 (Pathogen Scan Box) -->
+    <rect x="440" y="320" width="80" height="75" rx="8" stroke="#fbbf24" stroke-width="2" stroke-dasharray="8,6" fill="rgba(245, 158, 11, 0.15)" />
+    <circle cx="480" cy="355" r="4" fill="#fbbf24" />
+    <rect x="430" y="405" width="100" height="18" rx="4" fill="rgba(120, 53, 15, 0.85)" stroke="#fbbf24" stroke-width="1" />
+    <text x="480" y="418" fill="#fef3c7" font-family="Inter, sans-serif" font-size="10" font-weight="600" text-anchor="middle">HEALTHY MARGIN</text>
+  </g>
+
+  <!-- Horizontal Vision Laser Scan Line -->
+  <line x1="160" y1="230" x2="640" y2="230" stroke="url(#scanGrad)" stroke-width="4" />
+  <line x1="160" y1="230" x2="640" y2="230" stroke="#a7f3d0" stroke-width="1.5" opacity="0.9" />
+
+  <!-- Neural Mesh Nodes & Connectors -->
+  <g stroke="#38bdf8" stroke-width="1.5" opacity="0.6">
+    <line x1="400" y1="80" x2="340" y2="280" stroke-dasharray="4,4" />
+    <line x1="340" y1="280" x2="480" y2="355" stroke-dasharray="4,4" />
+    <line x1="480" y1="355" x2="540" y2="460" stroke-dasharray="4,4" />
+  </g>
+  <circle cx="400" cy="80" r="5" fill="#38bdf8" />
+  <circle cx="540" cy="460" r="5" fill="#38bdf8" />
+
+  <!-- Status Chip Top Left -->
+  <g transform="translate(40, 40)">
+    <rect width="180" height="38" rx="19" fill="rgba(15, 23, 42, 0.75)" stroke="rgba(255,255,255,0.15)" stroke-width="1" />
+    <circle cx="20" cy="19" r="6" fill="#22c55e">
+      <animate attributeName="opacity" values="1;0.4;1" dur="2s" repeatCount="indefinite" />
+    </circle>
+    <text x="36" y="24" fill="#f8fafc" font-family="Inter, sans-serif" font-size="12" font-weight="600">MULTIMODAL AI ACTIVE</text>
+  </g>
+
+  <!-- Status Chip Bottom Right -->
+  <g transform="translate(560, 520)">
+    <rect width="200" height="42" rx="12" fill="rgba(6, 78, 59, 0.9)" stroke="#10b981" stroke-width="1.5" />
+    <text x="100" y="26" fill="#ecfdf5" font-family="Inter, sans-serif" font-size="12" font-weight="700" text-anchor="middle">SDG 2 • RESILIENT CROPS</text>
+  </g>
+</svg>
